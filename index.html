@@ -330,7 +330,7 @@
   /* FOOTER */
 footer{background:#0C3D47;color:#fff;overflow:hidden}
 footer .container{padding:80px 24px 24px;max-width:1280px}
-footer .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:40px}
+footer .grid{display:grid;grid-template-columns:1fr;gap:32px}
 @media(min-width:768px){footer .grid{grid-template-columns:2fr 1fr 1fr 1fr 1fr}}
 footer h3{font-size:24px;font-weight:800}
 footer h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--peach);margin-bottom:12px}
@@ -379,9 +379,12 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
   /* RESPONSIVE */
   @media (max-width:900px){
     .why,.exp,.smile-wrap,.priority,.testimonial-wrap,.blog-grid,.faq,.foot-top{grid-template-columns:1fr}
+    .exp{display:flex;flex-direction:column}
+    .exp-visual{order:-1;margin-bottom:24px}
     .care-top{flex-direction:column}
     .smile-left{position:static}
-    .stack-card{position:static !important}
+    .stack-card{position:static !important;top:auto !important}
+    .smile-stack{gap:16px}
     .acc.open .acc-body{flex-direction:column}
     .acc-body .acc-img{width:100%}
     .nav-links{display:none}
@@ -394,6 +397,9 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
     section{padding:64px 0}
     .hero-content{bottom:30px}
     .priority-grid{grid-template-rows:140px 140px}
+    .container{padding:0 16px}
+    .why-img{padding:0 0 50px 40px}
+    .why-img::before{width:180px;height:180px}
   }
 
   /* HAMBURGER */
@@ -421,6 +427,7 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
 @media(max-width:900px){
   .hamburger{display:flex}
   .nav-links{display:none !important}
+  #navBookBtn{display:none}
 }
 </style>
 </head>
@@ -452,7 +459,7 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
         <a href="contact.html">Contact</a>
       </div>
       <div style="display:flex;align-items:center;gap:12px">
-        <a href="#appt" class="btn btn-peach btn-sm">Book Now</a>
+        <a href="#appt" class="btn btn-peach btn-sm" id="navBookBtn">Book Now</a>
         <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
           <span></span><span></span><span></span>
         </button>
@@ -846,8 +853,13 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
     slider.addEventListener('mousedown', e=>{dragging=true;fromEvent(e);});
     window.addEventListener('mousemove', e=>{if(dragging)fromEvent(e);});
     window.addEventListener('mouseup', ()=>dragging=false);
-    slider.addEventListener('touchstart', e=>{dragging=true;fromEvent(e);},{passive:true});
-    window.addEventListener('touchmove', e=>{if(dragging)fromEvent(e);},{passive:true});
+   slider.addEventListener('touchstart', e=>{
+      const rect = slider.getBoundingClientRect();
+      const touchX = e.touches[0].clientX - rect.left;
+      const handleX = parseFloat(wrap.style.width||'50')/100 * rect.width;
+      if(Math.abs(touchX - handleX) < 40){dragging=true;fromEvent(e);}
+    },{passive:true});
+    window.addEventListener('touchmove', e=>{if(dragging){e.preventDefault();fromEvent(e);}},{passive:false});
     window.addEventListener('touchend', ()=>dragging=false);
     window.addEventListener('resize', ()=>setPos(parseFloat(wrap.style.width)||50));
     setPos(50);
