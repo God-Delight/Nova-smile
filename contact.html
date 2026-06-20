@@ -242,30 +242,6 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
         <p class="lede">Get expert care in a modern, welcoming <span class="clinic">clinic</span>. It only takes a minute to book, we will follow up to confirm your visit.</p>
 
         <form class="form-grid" onsubmit="event.preventDefault();alert('Thanks! We will follow up to confirm your visit.');">
-          <div class="field select-wrap">
-            <label>Treatment Type *</label>
-            <select required>
-              <option value="">Select Treatment</option>
-              <option>General Cleaning</option>
-              <option>Whitening</option>
-              <option>Veneers</option>
-              <option>Implants</option>
-              <option>Orthodontics</option>
-              <option>Emergency Care</option>
-            </select>
-          </div>
-          <div class="field date-wrap">
-            <label>Preferred Date</label>
-            <input type="date" />
-          </div>
-          <div class="field select-wrap">
-            <label>Preferred Time Slot</label>
-            <select>
-              <option value="">Select Time Slot</option>
-              <option>9:00 AM</option><option>11:00 AM</option>
-              <option>1:00 PM</option><option>3:00 PM</option><option>5:00 PM</option>
-            </select>
-          </div>
           <div class="field">
             <label>Full Name *</label>
             <input type="text" placeholder="Your Full Name" required />
@@ -277,6 +253,22 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
           <div class="field">
             <label>Email Address</label>
             <input type="email" placeholder="Your Email Address" />
+          </div>
+          <div class="field date-wrap">
+            <label>Preferred Date</label>
+            <input type="date" id="apptDate" />
+            <p id="dateMsg" style="font-size:13px;margin-top:6px;color:red;display:none">We are closed on Sundays. Please select another day.</p>
+          </div>
+          <div class="field select-wrap">
+            <label>Preferred Time Slot</label>
+            <select id="apptTime">
+              <option value="">Select a date first</option>
+            </select>
+          </div>
+          <br>
+          <div class="field" style="grid-column:1/-1">
+            <label for="message">REASON FOR VISIT</label>
+            <textarea id="message" name="message" rows="6" placeholder="Tell us briefly what's bothering you or what you'd like to improve — we'll take it from there." style="width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:12px;font-family:'Nunito',sans-serif;font-size:15px;color:var(--black);resize:vertical;outline:none;transition:.2s" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--line)'"></textarea>
           </div>
 
           <div class="submit-row" style="grid-column:1/-1">
@@ -375,6 +367,51 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
   });
   document.getElementById('drawerClose').addEventListener('click', closeDrawer);
   document.getElementById('drawerOverlay').addEventListener('click', closeDrawer);
+  // Date + time slot logic
+  const weekdaySlots = [
+    '9:00 AM','9:30 AM','10:00 AM','10:30 AM','11:00 AM','11:30 AM',
+    '12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM',
+    '3:00 PM','3:30 PM','4:00 PM','4:30 PM'
+  ];
+  const saturdaySlots = [
+    '10:00 AM','10:30 AM','11:00 AM','11:30 AM',
+    '12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM'
+  ];
+
+  const dateInput = document.getElementById('apptDate');
+  const timeSelect = document.getElementById('apptTime');
+  const dateMsg = document.getElementById('dateMsg');
+
+  // Block past dates
+  const today = new Date().toISOString().split('T')[0];
+  dateInput.setAttribute('min', today);
+
+  dateInput.addEventListener('change', function(){
+    const selected = new Date(this.value + 'T00:00:00');
+    const day = selected.getDay(); // 0=Sun, 6=Sat
+
+    timeSelect.innerHTML = '';
+
+    if(day === 0){
+      // Sunday — blocked
+      dateMsg.style.display = 'block';
+      timeSelect.innerHTML = '<option value="">Not available on Sundays</option>';
+      timeSelect.disabled = true;
+      return;
+    }
+
+    dateMsg.style.display = 'none';
+    timeSelect.disabled = false;
+
+    const slots = day === 6 ? saturdaySlots : weekdaySlots;
+    timeSelect.innerHTML = '<option value="">Select a time</option>';
+    slots.forEach(function(slot){
+      const opt = document.createElement('option');
+      opt.value = slot;
+      opt.textContent = slot;
+      timeSelect.appendChild(opt);
+    });
+  });
 </script>
 </body>
 </html>
