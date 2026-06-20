@@ -168,24 +168,62 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
     .cta-banner{height:340px}
     .foot-bottom{flex-direction:column;gap:12px;text-align:center}
   }
+   .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px;z-index:100}
+  .hamburger span{display:block;width:24px;height:2px;background:var(--black);border-radius:2px;transition:.3s}
+  .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .hamburger.open span:nth-child(2){opacity:0}
+  .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:40}
+  .drawer-overlay.open{display:block}
+  .side-drawer{position:fixed;top:0;left:-280px;width:280px;height:100%;background:var(--white);z-index:50;display:flex;flex-direction:column;padding:80px 32px 40px;gap:28px;box-shadow:4px 0 24px rgba(0,0,0,0.12);transition:left .3s cubic-bezier(.4,0,.2,1)}
+  .side-drawer.open{left:0}
+  .side-drawer a{font-weight:700;font-size:17px;color:var(--black)}
+  .side-drawer a:hover{color:var(--teal)}
+  .drawer-close{position:absolute;top:20px;right:20px;background:none;border:none;font-size:24px;cursor:pointer;color:var(--muted)}
+  @media(max-width:900px){
+    .hamburger{display:flex !important}
+    .nav-links{display:none !important}
+    #navBookBtn{display:none !important}
+  }
 </style>
 </head>
 <body>
+
+
+<!-- NAV -->
+<!-- DRAWER OVERLAY -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<!-- SIDE DRAWER -->
+<div class="side-drawer" id="sideDrawer">
+  <button class="drawer-close" id="drawerClose">✕</button>
+  <a href="index.html" onclick="closeDrawer()">Home</a>
+  <a href="index.html#services" onclick="closeDrawer()">Services</a>
+  <a href="index.html#about" onclick="closeDrawer()">About</a>
+  <a href="index.html#why" onclick="closeDrawer()">Why Us</a>
+  <a href="index.html#blog" onclick="closeDrawer()">Blog</a>
+  <a href="#" onclick="closeDrawer()">Contact</a>
+  <a href="#contact-form" class="btn btn-peach btn-sm" style="margin-top:12px" onclick="closeDrawer()">Book Now →</a>
+</div>
 
 <!-- NAV -->
 <nav class="nav">
   <div class="container">
     <div class="nav-inner">
-      <a class="nav-logo" href="novasmile-homepage.html"><img src="logo-nav.png" alt="Novasmile" /></a>
+      <a class="nav-logo" href="index.html"><img src="logo-nav.png" alt="Novasmile" /></a>
       <div class="nav-links">
-        <a href="novasmile-homepage.html">Home</a>
-        <a href="novasmile-homepage.html#services">Services</a>
-        <a href="novasmile-homepage.html#about">About</a>
-        <a href="novasmile-homepage.html#why">Why Us</a>
-        <a href="novasmile-homepage.html#blog">Blog</a>
+        <a href="index.html">Home</a>
+        <a href="index.html#services">Services</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#blog">Blog</a>
         <a href="#">Contact</a>
       </div>
-      <a href="#contact-form" class="btn btn-peach btn-sm">Book Now</a>
+      <div style="display:flex;align-items:center;gap:12px">
+        <a href="#contact-form" class="btn btn-peach btn-sm" id="navBookBtn">Book Now</a>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
   </div>
 </nav>
@@ -323,6 +361,20 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
   document.querySelectorAll('.acc-head').forEach(h=>{
     h.addEventListener('click',()=>h.parentElement.classList.toggle('open'));
   });
+</script>
+<script>
+  function closeDrawer(){
+    document.getElementById('sideDrawer').classList.remove('open');
+    document.getElementById('drawerOverlay').classList.remove('open');
+    document.getElementById('hamburgerBtn').classList.remove('open');
+  }
+  document.getElementById('hamburgerBtn').addEventListener('click',function(){
+    this.classList.toggle('open');
+    document.getElementById('sideDrawer').classList.toggle('open');
+    document.getElementById('drawerOverlay').classList.toggle('open');
+  });
+  document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+  document.getElementById('drawerOverlay').addEventListener('click', closeDrawer);
 </script>
 </body>
 </html>
