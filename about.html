@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>About — Novasmile Dental Studios</title>
+<link rel="icon" type="image/png" href="Favicon.png" />
+<link rel="apple-touch-icon" href="Favicon.png" />
+<title>About: Novasmile Dental Clinic</title>
 <meta name="description" content="Meet the dedicated medical professionals behind Novasmile Dental Studios — experienced, compassionate, and committed to your care." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,8 +21,8 @@
     --line:rgba(12,12,12,0.10);
     --muted:rgba(12,12,12,0.65);
     --bg-soft:#F6F4EF;
-    --blue-soft:#E7EEFB;
-    --blue-accent:#4C8BF5;
+    --blue-soft:#F6F4EF;
+    --blue-accent:#0097B5;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -98,17 +100,17 @@
   .stat .num{position:absolute;right:18px;bottom:8px;font-size:64px;font-weight:800;color:rgba(12,12,12,.10);letter-spacing:-0.03em;line-height:1}
 
   /* PROMISE */
-  .promise{background:var(--blue-soft);border-radius:28px;padding:64px 50px}
+  .promise{background:var(--blue-soft);border-radius:0;padding:80px 6%}
   .promise .eyebrow{background:#fff}
   .promise h2{max-width:620px;margin-bottom:36px}
   .promise-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:32px;align-items:stretch}
-  .promise-img{border-radius:20px;overflow:hidden;background:#ccd}
-  .promise-img img{width:100%;height:100%;object-fit:cover;min-height:360px}
+  .promise-img{border-radius:20px;overflow:hidden;background:#ccd; height: 500px;}
+  .promise-img img{width:100%;height:100%;object-fit:cover;min-height:650px;}
   .promise-card{background:#fff;border-radius:20px;padding:34px 32px;display:flex;flex-direction:column}
   .promise-card h3{font-size:24px;margin-bottom:14px}
-  .promise-card > p{font-size:14.5px;margin-bottom:22px}
+  .promise-card > p{font-size:16px; line-height: 1.8;margin-bottom:22px}
   .promise-card ul{list-style:none;display:flex;flex-direction:column;gap:14px;margin-bottom:28px}
-  .promise-card li{display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--muted)}
+  .promise-card li{display:flex;gap:12px;align-items:flex-start;font-size: 15px; line-height: 1.8; color:var(--muted)}
   .promise-card li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--blue-accent);flex:none;margin-top:9px}
   .promise-card li b{color:var(--black);font-weight:700}
   .promise-card .btn{align-self:flex-start;margin-top:auto}
@@ -128,29 +130,29 @@
   .doc .socials{display:flex;gap:8px;color:var(--muted);font-size:14px}
   .doc .socials a{width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center}
 
-  /* EXCELLENCE */
-  .excel{background:var(--blue-soft);border-radius:28px;padding:64px 50px}
-  .excel-top{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:36px;align-items:flex-end}
-  .excel-top h2{max-width:480px}
-  .excel-top p{font-size:14.5px;max-width:380px}
-  .excel-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:32px;align-items:stretch}
-  .excel-img{border-radius:20px;overflow:hidden;background:#ccd;min-height:360px}
-  .excel-img img{width:100%;height:100%;object-fit:cover}
-  .excel-card{background:#fff;border-radius:20px;padding:34px 32px;display:flex;flex-direction:column}
-  .excel-card h3{font-size:24px;margin-bottom:14px}
-  .excel-card > p{font-size:14.5px;margin-bottom:22px}
-  .excel-card ul{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
-  .excel-card li{display:flex;gap:10px;align-items:center;font-size:14.5px;color:var(--black);font-weight:600}
-  .excel-card li .chk{width:18px;height:18px;border-radius:50%;background:var(--blue-accent);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;flex:none}
-  .excel-card .btn{align-self:flex-start;margin-top:auto}
+  /* WHY CHOOSE US */
+  .why-section{padding:80px 0;background:var(--white)}
+  .why-section .container{text-align:center}
+  .why-section .eyebrow{margin-bottom:16px}
+  .why-section h2{margin-bottom:12px}
+  .why-section .why-sub{font-size:15px;color:var(--muted);max-width:520px;margin:0 auto 48px}
+  .why-gallery{display:grid;grid-template-columns:1fr 1.2fr 1fr;grid-template-rows:1fr 1fr;gap:16px;min-height:520px}
+  .why-gallery-img{border-radius:20px;overflow:hidden;background:#dde8ea; height: 260px;}
+  .why-gallery-img img{width:100%;height:100%;object-fit:cover}
+  .why-center-card{grid-column:2;grid-row:1 / 3;background:var(--teal);border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;text-align:center;gap:20px}
+  .why-center-card .card-icon{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:1.4rem}
+  .why-center-card h3{font-size:22px;color:#fff;line-height:1.3;margin-bottom:8px}
+  .why-center-card p{font-size:14px;color:rgba(255,255,255,0.85);line-height:1.7}
+  .why-section .btn-wrap{margin-top:40px;text-align:center}
 
   /* APPT CTA */
   .appt{position:relative;height:520px;overflow:hidden;padding:0;border-radius:0}
   .appt img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .appt::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(12,12,12,.55) 0%,rgba(12,12,12,.15) 60%,rgba(12,12,12,0) 100%)}
-  .appt-inner{position:relative;z-index:2;height:100%;display:flex;align-items:center}
+  .appt-inner{position:relative;z-index:2;height:100%;display:flex;align-items:center; padding-left: 6%; }
   .appt h2{color:#fff;font-size:clamp(34px,4vw,54px);max-width:640px;margin-bottom:18px}
   .appt p{color:rgba(255,255,255,.85);max-width:520px;font-size:15px;margin-bottom:28px}
+  .appt-inner .container { margin-left: 0; }
 
   /* REVEAL ANIMATIONS */
   .reveal{opacity:0;transition:opacity 1s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1);will-change:opacity,transform}
@@ -205,7 +207,9 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
   @media(max-width:900px){
     .intro{grid-template-columns:1fr;gap:24px}
     .stats,.team-grid{grid-template-columns:1fr 1fr}
-    .promise-grid,.excel-grid,.excel-top,.hero-row{grid-template-columns:1fr}
+    .promise-grid,.hero-row{grid-template-columns:1fr}
+    .why-gallery{grid-template-columns:1fr;grid-template-rows:auto}
+    .why-center-card{grid-row:auto}
     .hero-card{justify-self:start}
     .nav-links{display:none}
     .promise,.excel{padding:40px 24px}
@@ -275,14 +279,16 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
 </nav>
 
 <header class="hero">
-  <img class="bg" src="Team.jpg" alt="Our dental professionals" />
+   <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0">
+    <source src="clinic tour.mp4" type="video/mp4">
+  </video>
   <div class="hero-content">
     <div class="container">
       <div class="hero-row">
         <div>
           <span class="eyebrow-light">Our team of oral care specialists</span>
-          <h1>Our Dedicated<br/>Medical Professionals</h1>
-          <p class="lead">Experienced, compassionate, and committed to your care. Every visit at Novasmile is handled by qualified professionals who put you first.</p>
+          <h1>Step into a Clinic<br/>Built Around You</h1>
+          <p class="lead">Modern facilities, experienced hands, and a team that makes every visit feel less like a dental appointment and more like care you actually look forward to.</p>
         </div>
       </div>
     </div>
@@ -294,88 +300,65 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
     <div class="intro">
       <div><span class="eyebrow">About Us</span></div>
       <div class="body">
-        <p class="big">We believe that every smile tells a story — and we're here to make yours healthier, brighter, and more confident. Whether you're visiting for a routine cleaning or a complete smile transformation experience today.</p>
-        <a href="#" class="btn btn-primary"><span class="arrow">→</span> Learn More About Us</a>
+        <p class="big">At Novasmile, we believe everyone deserves to smile with confidence, no matter their age or background. We are a premium dental facility right here in Nigeria, built to give you excellence in dental care. From kids taking their first dental visit to adults restoring their smile, we treat every patient like family.</p>
+        <a href="#contact" class="btn btn-primary">Book a Consultation <span class="arrow">→</span></a>
         <div class="stats cascade">
-          <div class="stat"><h4>Years of Experience</h4><p>Delivering trusted dental care for generations of families.</p><span class="num">25+</span></div>
-          <div class="stat"><h4>Patient Satisfaction</h4><p>Exceeding expectations with compassionate care.</p><span class="num">99%</span></div>
-          <div class="stat"><h4>Emergency Support</h4><p>Always available when your smile needs us most.</p><span class="num">24/7</span></div>
+          <div class="stat"><h4>Happy Patients</h4><p>Thousands of confident smiles and counting.</p><span class="num">5k+</span></div>
+          <div class="stat"><h4>Services Offered</h4><p>Everything your smile needs, all under one roof.</p><span class="num">10+</span></div>
+          <div class="stat"><h4>Located in Lagos</h4><p>Proudly serving Okota and surrounding communities.</p><span class="num">🦷</span></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="reveal reveal-up">
-  <div class="container">
-    <div class="promise">
+<section class="promise reveal reveal-up">
       <span class="eyebrow">Our Mission</span>
       <h2>Our Promise, Where<br/>Compassion Meets Expertise</h2>
       <div class="promise-grid">
-        <div class="promise-img reveal reveal-left"><img src="promise.jpg" alt="Our commitment to care" /></div>
+        <div class="promise-img reveal reveal-left"><img src="Owner (3).jpeg" alt="Our commitment to care" /></div>
         <div class="promise-card reveal reveal-right">
           <h3>Our Commitment to Care</h3>
-          <p>To provide compassionate, high-quality care that enhances the comfort, dignity, and quality of life for every resident.</p>
+          <p>We don't just fix teeth. We restore confidence, improve health, and help you put your best smile forward at work, in school, and in everyday life.</p>
           <ul>
-            <li><span><b>Your Comfort is Our Priority.</b> Our team is dedicated to creating a welcoming and stress-free environment.</span></li>
-            <li><span><b>Excellence in Every Detail.</b> Advanced treatments, we adhere to the highest standards of quality and precision.</span></li>
-            <li><span><b>Building a Relationships Based on Trust.</b> That's why we are committed to transparent communication.</span></li>
+            <li><span><b>Expert Team, Modern Technology.</b> Our dentists use up-to-date techniques and equipment to make treatments faster, safer, and more comfortable.</span></li>
+            <li><span><b>Care for the Whole Family.</b> From pediatric dentistry to orthodontics, whitening, implants, and routine checkups, we've got you covered under one roof.</span></li>
+            <li><span><b>Comfort and Trust First.</b> Our team takes time to explain every step, answer your questions, and make sure you feel at ease from the moment you walk in.</span></li>
           </ul>
-          <a href="#" class="btn btn-primary"><span class="arrow">→</span> Contact Us</a>
+          <a href="#contact" class="btn btn-primary">Contact Us <span class="arrow">→</span></a>
         </div>
       </div>
-    </div>
-  </div>
 </section>
 
-<!-- <section class="reveal reveal-up team">
-  <div class="container">
-    <span class="eyebrow">Our Team</span>
-    <h2>Our Experts in Oral Health</h2>
-    <p class="sub">A dedicated team of professionals with one goal — your healthiest, happiest smile.</p>
-    <div class="team-grid cascade">
-      <div class="doc"><div class="img"><img src="doc-1.jpg" alt="Dr. James Parker" /></div><div class="meta"><div><h4>Dr. James Parker</h4><p>Lead Cosmetic Dentist</p></div><div class="socials"><a href="#">◐</a><a href="#">✕</a></div></div></div>
-      <div class="doc"><div class="img"><img src="doc-2.jpg" alt="Dr. Oliver Thompson" /></div><div class="meta"><div><h4>Dr. Oliver Thompson</h4><p>Senior Implantologist</p></div><div class="socials"><a href="#">◐</a><a href="#">✕</a></div></div></div>
-      <div class="doc"><div class="img"><img src="doc-3.jpg" alt="Dr. Ethan Collins" /></div><div class="meta"><div><h4>Dr. Ethan Collins</h4><p>Pediatric Dentist</p></div><div class="socials"><a href="#">◐</a><a href="#">✕</a></div></div></div>
-      <div class="doc"><div class="img"><img src="doc-4.jpg" alt="Dr. Samuel Ahmed" /></div><div class="meta"><div><h4>Dr. Samuel Ahmed</h4><p>Root Canal Specialist</p></div><div class="socials"><a href="#">◐</a><a href="#">✕</a></div></div></div>
-      <div class="doc"><div class="img"><img src="doc-5.jpg" alt="Dr. Daniel Thompson" /></div><div class="meta"><div><h4>Dr. Daniel Thompson</h4><p>Senior Implantologist</p></div><div class="socials"><a href="#">◐</a><a href="#">✕</a></div></div></div>
-      <div class="doc"><div class="img"><img src="doc-6.jpg" alt="Dr. Benjamin Collins" /></div><div class="meta"><div><h4>Dr. Benjamin Collins</h4><p>Pediatric Dentist</p></div><div class="socials"><a href="#">◐</a><a href="#">✕</a></div></div></div>
-      <div class="doc"><div class="img"><img src="doc-7.jpg" alt="Dr. Emmett Carter" /></div><div class="meta"><div><h4>Dr. Emmett Carter</h4><p>Senior Orthodontics</p></div><div class="socials"><a href="#">◐</a><a href="#">✕</a></div></div></div>
-      <div class="doc"><div class="img"><img src="doc-8.jpg" alt="Dr. Jerome Bell" /></div><div class="meta"><div><h4>Dr. Jerome Bell</h4><p>Oral & Maxillofacial Surgeon</p></div><div class="socials"><a href="#">◐</a><a href="#">✕</a></div></div></div>
-      <div class="doc"><div class="img"><img src="doc-9.jpg" alt="Dr. Nathan Murphy" /></div><div class="meta"><div><h4>Dr. Nathan Murphy</h4><p>Pediatric Dentist</p></div><div class="socials"><a href="#">◐</a><a href="#">✕</a></div></div></div>
-    </div>
-  </div>
-</section> -->
 
-<section class="reveal reveal-up">
+
+<section class="why-section reveal reveal-up">
   <div class="container">
-    <div class="excel">
-      <span class="eyebrow">Why Choose Our Doctors</span>
-      <div class="excel-top">
-        <h2>Excellence in Every<br/>Consultation Always</h2>
-        <p>We don't just manage money — we make it easier, clearer, and more empowering. Simple tools, smart insights, and support that never sleeps.</p>
-      </div>
-      <div class="excel-grid">
-        <div class="excel-img reveal reveal-left"><img src="excellence.jpg" alt="Dentist treating patient" /></div>
-        <div class="excel-card reveal reveal-right">
-          <h3>The key Reasons Patients<br/>Can Trust and Feel</h3>
-          <p>It measures vision by showcasing the doctors' expertise, qualifications, and approach to patient care, while also reflecting the hospital or clinic's commitment to quality healthcare overall.</p>
-          <ul>
-            <li><span class="chk">✓</span> Highly Qualified & Certified</li>
-            <li><span class="chk">✓</span> Specialized Expertise</li>
-            <li><span class="chk">✓</span> Patient-Centered Care</li>
-            <li><span class="chk">✓</span> Cutting-Edge Technology</li>
-            <li><span class="chk">✓</span> Compassion & Empathy</li>
-          </ul>
-          <a href="#" class="btn btn-primary"><span class="arrow">→</span> Talk to An Expert</a>
+    <span class="eyebrow">Why Choose Us</span>
+    <h2>Value-Driven Care,<br/>No Hidden Costs</h2>
+    <p class="why-sub">You get world-class treatment backed by clear, upfront pricing so you know exactly what to expect from day one.</p>
+  <div class="btn-wrap">
+      <a href="#contact" class="btn btn-primary">Talk to Us <span class="arrow">→</span></a>
+    </div>
+    <br>
+    <div class="why-gallery">
+      <div class="why-gallery-img"><img src="Group staff photo.jpg" alt="Dental care" /></div>
+      <div class="why-center-card">
+        <div class="card-icon">🦷</div>
+        <div>
+          <h3>Why Patients Keep Coming Back to Us</h3>
+          <p>From your first visit to your follow-up care, every interaction at Novasmile is built around your comfort, your goals, and your trust.</p>
         </div>
       </div>
+      <div class="why-gallery-img"><img src="dental chair.jpg" alt="Happy patient" /></div>
+      <div class="why-gallery-img"><img src="Waiting room.png" alt="Clinic interior" /></div>
+      <div class="why-gallery-img"><img src="smiling patient.jpg" alt="Dental treatment" /></div>
     </div>
   </div>
 </section>
 
 <section id="appt" class="reveal reveal-fade appt">
-  <img class="bg" src="appt.jpg" alt="Schedule an appointment" />
+  <img class="bg" src="CTA.jpg" alt="Schedule an appointment" />
   <div class="appt-inner">
     <div class="container">
       <h2>Schedule an appointment<br/>with us today!</h2>
