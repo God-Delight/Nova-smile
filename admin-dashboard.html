@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Novasmile Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: #f3f7f9; color: #333; }
+
+    /* TOPBAR */
+    .topbar {
+      background: #fff;
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .topbar-left img { height: 32px; }
+    .topbar-left span { font-size: 0.8rem; color: #888; font-weight: 600; }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .topbar-user { font-size: 0.85rem; font-weight: 700; color: #333; }
+    .btn-logout {
+      background: none;
+      border: 1.5px solid #dde8ea;
+      border-radius: 8px;
+      padding: 7px 16px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #666;
+      cursor: pointer;
+    }
+    .btn-logout:hover { border-color: #0097B5; color: #0097B5; }
+
+    /* MAIN */
+    .main { padding: 32px; max-width: 1100px; margin: 0 auto; }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    .page-header h1 { font-size: 1.4rem; font-weight: 900; color: #0d2b33; }
+    .page-header p { font-size: 0.85rem; color: #888; margin-top: 2px; }
+
+    .btn-new {
+      background: #0097B5;
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.88rem;
+      padding: 11px 24px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-new:hover { background: #007a93; }
+
+    /* STATS */
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+    .stat-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 20px 24px;
+      border: 1.5px solid #e8f0f2;
+    }
+    .stat-card .label { font-size: 0.78rem; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .stat-card .num { font-size: 1.8rem; font-weight: 900; color: #0097B5; }
+
+    /* POSTS TABLE */
+    .posts-wrap {
+      background: #fff;
+      border-radius: 16px;
+      border: 1.5px solid #e8f0f2;
+      overflow: hidden;
+    }
+    .posts-wrap table { width: 100%; border-collapse: collapse; }
+    .posts-wrap th {
+      text-align: left;
+      padding: 14px 20px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: #f8fbfc;
+      border-bottom: 1.5px solid #e8f0f2;
+    }
+    .posts-wrap td {
+      padding: 16px 20px;
+      font-size: 0.88rem;
+      border-bottom: 1px solid #f0f5f7;
+      vertical-align: middle;
+    }
+    .posts-wrap tr:last-child td { border-bottom: none; }
+    .posts-wrap tr:hover td { background: #f8fbfc; }
+    .post-title { font-weight: 700; color: #0d2b33; max-width: 300px; }
+    .post-cat {
+      background: #e6f6fa;
+      color: #0097B5;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 50px;
+      display: inline-block;
+    }
+    .post-date { color: #888; font-size: 0.82rem; }
+    .btn-edit {
+      background: none;
+      border: 1.5px solid #dde8ea;
+      border-radius: 7px;
+      padding: 5px 14px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #555;
+      cursor: pointer;
+      margin-right: 6px;
+    }
+    .btn-edit:hover { border-color: #0097B5; color: #0097B5; }
+    .btn-delete {
+      background: none;
+      border: 1.5px solid #fde8e8;
+      border-radius: 7px;
+      padding: 5px 14px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #e74c3c;
+      cursor: pointer;
+    }
+    .btn-delete:hover { background: #fff0f0; }
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #888;
+    }
+    .empty-state p { font-size: 0.9rem; margin-top: 8px; }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: 20px;
+      padding: 36px 40px;
+      width: 100%;
+      max-width: 680px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    .modal-header h2 { font-size: 1.2rem; font-weight: 900; color: #0d2b33; }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      color: #888;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .form-field { margin-bottom: 18px; }
+    .form-field label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 6px;
+    }
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #dde8ea;
+      border-radius: 10px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.88rem;
+      color: #333;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-field input:focus,
+    .form-field select:focus,
+    .form-field textarea:focus { border-color: #0097B5; }
+    .form-field textarea { min-height: 180px; resize: vertical; line-height: 1.65; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px; }
+    .btn-cancel {
+      background: none;
+      border: 1.5px solid #dde8ea;
+      border-radius: 10px;
+      padding: 11px 24px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: #666;
+      cursor: pointer;
+    }
+    .btn-publish {
+      background: #0097B5;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 28px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+    .btn-publish:hover { background: #007a93; }
+    .btn-publish:disabled { background: #aaa; cursor: not-allowed; }
+    .success-msg {
+      background: #e8f8f2;
+      color: #1a7a4a;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      display: none;
+    }
+    .success-msg.show { display: block; }
+    .error-msg {
+      background: #fff0f0;
+      color: #c0392b;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      display: none;
+    }
+    .error-msg.show { display: block; }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <img src="images/logo-h.png" alt="Novasmile" onerror="this.style.display='none'" />
+      <span>/ Admin</span>
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-user" id="userEmail"></span>
+      <button class="btn-logout" onclick="handleLogout()">Sign Out</button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="page-header">
+      <div>
+        <h1>Blog Posts</h1>
+        <p>Manage all published and draft articles</p>
+      </div>
+      <button class="btn-new" onclick="openModal()">+ New Post</button>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="label">Total Posts</div>
+        <div class="num" id="totalPosts">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">This Month</div>
+        <div class="num" id="monthPosts">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Categories</div>
+        <div class="num" id="totalCats">0</div>
+      </div>
+    </div>
+
+    <div class="posts-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Author</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="postsBody">
+          <tr>
+            <td colspan="5">
+              <div class="empty-state">
+                <p>No posts yet. Click <strong>New Post</strong> to get started.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- NEW/EDIT POST MODAL -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle">New Post</h2>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="success-msg" id="successMsg"></div>
+      <div class="error-msg" id="errorMsg"></div>
+      <div class="form-field">
+        <label>Post Title *</label>
+        <input type="text" id="postTitle" placeholder="e.g. 5 daily habits for healthier teeth" />
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Category *</label>
+          <select id="postCategory">
+            <option value="">Select category</option>
+            <option value="Oral Care">Oral Care</option>
+            <option value="Cosmetic">Cosmetic</option>
+            <option value="Kids">Kids</option>
+            <option value="Orthodontics">Orthodontics</option>
+            <option value="Clinic News">Clinic News</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Author Name *</label>
+          <input type="text" id="postAuthor" placeholder="e.g. Dr. Adeyemi" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Read Time</label>
+          <input type="text" id="postReadTime" placeholder="e.g. 5 min read" />
+        </div>
+        <div class="form-field">
+          <label>Cover Image URL *</label>
+          <input type="text" id="postImage" placeholder="https://..." />
+        </div>
+      </div>
+      <div class="form-field">
+        <label>Post Body *</label>
+        <textarea id="postBody" placeholder="Write your article here..."></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-publish" id="publishBtn" onclick="handlePublish()">Publish Post</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAEa9BtvYs2RjSvRrZZLb2Pz3P-9Xfo5jI",
+      authDomain: "nova-smile-404b5.firebaseapp.com",
+      projectId: "nova-smile-404b5",
+      storageBucket: "nova-smile-404b5.firebasestorage.app",
+      messagingSenderId: "205119413201",
+      appId: "1:205119413201:web:3e7027c9bf16978206def0"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let editingId = null;
+
+    // Auth guard
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = 'admin-login.html';
+      } else {
+        document.getElementById('userEmail').textContent = user.email;
+        loadPosts();
+      }
+    });
+
+    // Logout
+    window.handleLogout = async function() {
+      await signOut(auth);
+      window.location.href = 'admin-login.html';
+    }
+
+    // Load posts
+    async function loadPosts() {
+      const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'));
+      const snapshot = await getDocs(q);
+      const posts = [];
+      snapshot.forEach(d => posts.push({ id: d.id, ...d.data() }));
+
+      // Stats
+      document.getElementById('totalPosts').textContent = posts.length;
+      const now = new Date();
+      const thisMonth = posts.filter(p => {
+        if (!p.createdAt) return false;
+        const d = p.createdAt.toDate();
+        return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+      });
+      document.getElementById('monthPosts').textContent = thisMonth.length;
+      const cats = new Set(posts.map(p => p.category).filter(Boolean));
+      document.getElementById('totalCats').textContent = cats.size;
+
+      // Table
+      const tbody = document.getElementById('postsBody');
+      if (posts.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><p>No posts yet. Click <strong>New Post</strong> to get started.</p></div></td></tr>`;
+        return;
+      }
+      tbody.innerHTML = posts.map(p => {
+        const date = p.createdAt ? p.createdAt.toDate().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A';
+        return `
+          <tr>
+            <td><div class="post-title">${p.title}</div></td>
+            <td><span class="post-cat">${p.category || 'Uncategorised'}</span></td>
+            <td>${p.author || 'N/A'}</td>
+            <td class="post-date">${date}</td>
+            <td>
+              <button class="btn-edit" onclick="openEditModal('${p.id}', ${JSON.stringify(p).replace(/"/g, '&quot;')})">Edit</button>
+              <button class="btn-delete" onclick="deletePost('${p.id}')">Delete</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Open modal
+    window.openModal = function() {
+      editingId = null;
+      document.getElementById('modalTitle').textContent = 'New Post';
+      document.getElementById('postTitle').value = '';
+      document.getElementById('postCategory').value = '';
+      document.getElementById('postAuthor').value = '';
+      document.getElementById('postReadTime').value = '';
+      document.getElementById('postImage').value = '';
+      document.getElementById('postBody').value = '';
+      document.getElementById('publishBtn').textContent = 'Publish Post';
+      document.getElementById('successMsg').classList.remove('show');
+      document.getElementById('errorMsg').classList.remove('show');
+      document.getElementById('modalOverlay').classList.add('open');
+    }
+
+    window.openEditModal = function(id, data) {
+      editingId = id;
+      document.getElementById('modalTitle').textContent = 'Edit Post';
+      document.getElementById('postTitle').value = data.title || '';
+      document.getElementById('postCategory').value = data.category || '';
+      document.getElementById('postAuthor').value = data.author || '';
+      document.getElementById('postReadTime').value = data.readTime || '';
+      document.getElementById('postImage').value = data.image || '';
+      document.getElementById('postBody').value = data.body || '';
+      document.getElementById('publishBtn').textContent = 'Save Changes';
+      document.getElementById('successMsg').classList.remove('show');
+      document.getElementById('errorMsg').classList.remove('show');
+      document.getElementById('modalOverlay').classList.add('open');
+    }
+
+    window.closeModal = function() {
+      document.getElementById('modalOverlay').classList.remove('open');
+    }
+
+    // Publish / update post
+    window.handlePublish = async function() {
+      const title = document.getElementById('postTitle').value.trim();
+      const category = document.getElementById('postCategory').value;
+      const author = document.getElementById('postAuthor').value.trim();
+      const readTime = document.getElementById('postReadTime').value.trim();
+      const image = document.getElementById('postImage').value.trim();
+      const body = document.getElementById('postBody').value.trim();
+      const btn = document.getElementById('publishBtn');
+      const errorMsg = document.getElementById('errorMsg');
+      const successMsg = document.getElementById('successMsg');
+
+      if (!title || !category || !author || !body) {
+        errorMsg.textContent = 'Please fill in all required fields.';
+        errorMsg.classList.add('show');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+      errorMsg.classList.remove('show');
+
+      try {
+        const postData = { title, category, author, readTime, image, body };
+
+        if (editingId) {
+          await updateDoc(doc(db, 'posts', editingId), postData);
+          successMsg.textContent = 'Post updated successfully.';
+        } else {
+          await addDoc(collection(db, 'posts'), { ...postData, createdAt: serverTimestamp() });
+          successMsg.textContent = 'Post published successfully.';
+        }
+
+        successMsg.classList.add('show');
+        btn.disabled = false;
+        btn.textContent = editingId ? 'Save Changes' : 'Publish Post';
+        loadPosts();
+        setTimeout(closeModal, 1500);
+      } catch (err) {
+        errorMsg.textContent = 'Something went wrong. Please try again.';
+        errorMsg.classList.add('show');
+        btn.disabled = false;
+        btn.textContent = editingId ? 'Save Changes' : 'Publish Post';
+      }
+    }
+
+    // Delete post
+    window.deletePost = async function(id) {
+      if (!confirm('Are you sure you want to delete this post? This cannot be undone.')) return;
+      await deleteDoc(doc(db, 'posts', id));
+      loadPosts();
+    }
+  </script>
+</body>
+</html>

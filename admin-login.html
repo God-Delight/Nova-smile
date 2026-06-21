@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Novasmile Admin Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #f3f7f9;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-wrap {
+      background: #fff;
+      border-radius: 20px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+    }
+    .login-logo {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .login-logo img { height: 40px; }
+    .login-logo p {
+      font-size: 0.85rem;
+      color: #888;
+      margin-top: 8px;
+    }
+    h1 {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: #0d2b33;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+    .sub {
+      font-size: 0.85rem;
+      color: #888;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .field { margin-bottom: 18px; }
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 6px;
+    }
+    input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid #dde8ea;
+      border-radius: 10px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.9rem;
+      color: #333;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus { border-color: #0097B5; }
+    .btn-login {
+      width: 100%;
+      padding: 13px;
+      background: #0097B5;
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.95rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s;
+    }
+    .btn-login:hover { background: #007a93; }
+    .btn-login:disabled { background: #aaa; cursor: not-allowed; }
+    .error {
+      background: #fff0f0;
+      color: #c0392b;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      display: none;
+    }
+    .error.show { display: block; }
+  </style>
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="login-logo">
+      <img src="images/logo-h.png" alt="Novasmile" onerror="this.style.display='none'" />
+      <p>Blog Admin Panel</p>
+    </div>
+    <h1>Welcome back</h1>
+    <p class="sub">Sign in to manage your blog posts</p>
+    <div class="error" id="errorMsg"></div>
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" id="email" placeholder="admin@novasmile.com" />
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="••••••••" />
+    </div>
+    <button class="btn-login" id="loginBtn" onclick="handleLogin()">Sign In</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAEa9BtvYs2RjSvRrZZLb2Pz3P-9Xfo5jI",
+      authDomain: "nova-smile-404b5.firebaseapp.com",
+      projectId: "nova-smile-404b5",
+      storageBucket: "nova-smile-404b5.firebasestorage.app",
+      messagingSenderId: "205119413201",
+      appId: "1:205119413201:web:3e7027c9bf16978206def0"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) window.location.href = 'admin-dashboard.html';
+    });
+
+    window.handleLogin = async function() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const btn = document.getElementById('loginBtn');
+      const errorMsg = document.getElementById('errorMsg');
+
+      if (!email || !password) {
+        errorMsg.textContent = 'Please enter your email and password.';
+        errorMsg.classList.add('show');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Signing in...';
+      errorMsg.classList.remove('show');
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = 'admin-dashboard.html';
+      } catch (err) {
+        let msg = 'Invalid email or password. Please try again.';
+        errorMsg.textContent = msg;
+        errorMsg.classList.add('show');
+        btn.disabled = false;
+        btn.textContent = 'Sign In';
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') window.handleLogin();
+    });
+  </script>
+</body>
+</html>
