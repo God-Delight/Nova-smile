@@ -73,7 +73,7 @@
   .acc-head .plus{margin-left:auto;font-size:22px;color:var(--muted);transition:.2s}
   .acc.open .acc-head .plus{transform:rotate(45deg);color:var(--teal)}
   .acc.open .num{background:var(--teal);color:#fff;border-color:var(--teal)}
-  .acc-body{display:none;padding:0 0 24px 54px;color:var(--muted);font-size:15px}
+  .acc-body{display:none;padding:0 0 24px 54px;color:var(--muted);font-size:15px line-height:1.8}
   .acc.open .acc-body{display:flex;gap:30px;align-items:flex-start}
   .acc-body .acc-text{flex:1;max-width:480px}
   .acc-body .acc-img{flex:none;width:340px;aspect-ratio:4/3;border-radius:16px;overflow:hidden;margin-left:40px}
@@ -267,11 +267,11 @@
 <div class="side-drawer" id="sideDrawer">
   <button class="drawer-close" id="drawerClose">✕</button>
   <a href="#" onclick="closeDrawer()">Home</a>
-  <a href="#services" onclick="closeDrawer()">Services</a>
-  <a href="#about" onclick="closeDrawer()">About</a>
-  <a href="#blog" onclick="closeDrawer()">Blog</a>
+  <a href="services.html" onclick="closeDrawer()">Services</a>
+  <a href="about.html" onclick="closeDrawer()">About</a>
+  <a href="blog.html" onclick="closeDrawer()">Blog</a>
   <a href="contact.html" onclick="closeDrawer()">Contact</a>
-  <a href="#appt" class="btn btn-peach btn-sm" style="margin-top:12px" onclick="closeDrawer()">Book Now →</a>
+  <a href="contact.html" class="btn btn-peach btn-sm" style="margin-top:12px" onclick="closeDrawer()">Book Now →</a>
 </div>
 
 <nav class="nav">
@@ -280,13 +280,13 @@
       <a class="nav-logo" href="#"><img src="logo-nav.png" alt="Novasmile" /></a>
       <div class="nav-links">
         <a href="#">Home</a>
-        <a href="#services">Services</a>
+        <a href="services.html">Services</a>
         <a href="about.html">About</a>
-        <a href="#blog">Blog</a>
+        <a href="blog.html">Blog</a>
         <a href="contact.html">Contact</a>
       </div>
       <div style="display:flex;align-items:center;gap:12px">
-        <a href="#appt" class="btn btn-peach btn-sm" id="navBookBtn">Book Now</a>
+        <a href="contact.html" class="btn btn-peach btn-sm" id="navBookBtn">Book Now</a>
         <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
           <span></span><span></span><span></span>
         </button>
@@ -303,8 +303,8 @@
       <h1>Healthy Teeth,<br/>Confident Smile</h1>
       <div class="hero-row">
         <div class="hero-cta">
-          <a href="#appt" class="btn btn-peach">Book Appointment →</a>
-          <a href="#services" class="btn btn-outline">Our Services</a>
+          <a href="contact.html" class="btn btn-peach">Book Appointment →</a>
+          <a href="services.html" class="btn btn-outline">Our Services</a>
         </div>
         <div class="hero-right">
           <p style="color:rgba(255,255,255,.9);margin-bottom:14px">Personalized dental care with a gentle touch, built around your comfort and confidence.</p>
@@ -376,35 +376,45 @@
         <div class="acc open">
           <div class="acc-head"><span class="num">01</span>Preventive & General Dentistry<span class="plus">+</span></div>
           <div class="acc-body">
-            <div class="acc-text">Catch problems early and keep your smile healthy with thorough exams, cleaning, and expert guidance.</div>
+            <div class="acc-text">A healthy smile starts with prevention. We provide detailed examinations, professional teeth cleaning and polishing, fluoride treatments, and practical oral hygiene guidance. Regular visits with us catch small issues early, so you avoid pain, cost, and time off work later.
+              <br><a href="contact.html" class="btn btn-primary" style="margin-top:18px;display:inline-flex">Book a Consultation →</a>
+            </div>
             <div class="acc-img"><img src="preventative dentistry.jpeg" alt="Tooth surgery" /></div>
           </div>
         </div>
         <div class="acc">
           <div class="acc-head"><span class="num">02</span> Restorative Dentistry <span class="plus">+</span></div>
           <div class="acc-body">
-            <div class="acc-text">From fillings to crowns, we repair and preserve your natural teeth so your smile stays whole and functional.</div>
+            <div class="acc-text">When teeth are damaged or decayed, we focus on saving them. Our restorative treatments include tooth-colored fillings, root canal therapy to relieve pain and preserve natural teeth, dental crowns and bridges to restore function. The goal is simple: keep your smile whole and working as it should.
+              <br><a href="contact.html" class="btn btn-primary" style="margin-top:18px;display:inline-flex">Book a Consultation →</a>
+            </div>
             <div class="acc-img"><img src="Restorative dentistry.jpg" alt="Before and after teeth" /></div>
           </div>
         </div>
         <div class="acc">
           <div class="acc-head"><span class="num">03</span> Cosmetic Dentistry <span class="plus">+</span></div>
           <div class="acc-body">
-            <div class="acc-text">Whiten, reshape, and transform your smile with treatments tailored to your face and your confidence.</div>
+            <div class="acc-text">Your smile should reflect your confidence. We offer professional in-office teeth whitening for instant brightness, custom veneers to correct chips, gaps, and discoloration, and personalized smile design consultations to plan a transformation that suits your face and lifestyle.
+             <br><a href="contact.html" class="btn btn-primary" style="margin-top:18px;display:inline-flex">Book a Consultation →</a>
+            </div>
             <div class="acc-img"><img src="Cosmetic dentistry.jpg" alt="Teeth Filling" /></div>
           </div>
         </div>
         <div class="acc">
           <div class="acc-head"><span class="num">04</span> Orthodontics <span class="plus">+</span></div>
           <div class="acc-body">
-            <div class="acc-text">Straighten crowded or misaligned teeth discreetly for a healthier bite and a more confident smile.</div>
+            <div class="acc-text">Crooked, crowded, or spaced teeth affect both appearance and bite. Our orthodontic solutions straighten teeth discreetly and effectively, improving alignment, function, and long-term oral health. We'll assess your occlusion and your bite and recommend the best approach to give you a straighter, healthier smile.
+              <br><a href="contact.html" class="btn btn-primary" style="margin-top:18px;display:inline-flex">Book a Consultation →</a>
+            </div>
             <div class="acc-img"><img src="Orthodontics.jpeg" alt="woman smilling with braces" /></div>
           </div>
         </div>
         <div class="acc">
           <div class="acc-head"><span class="num">05</span> Oral Surgery <span class="plus">+</span></div>
           <div class="acc-body">
-            <div class="acc-text">Safe, comfortable extractions and surgical care with clear aftercare support every step of the way.</div>
+            <div class="acc-text">For extractions, impacted wisdom teeth, and other surgical needs, our oral surgery services are performed with patient comfort and safety as the priority. We use gentle techniques and clear aftercare guidance to make the process as smooth as possible.
+             <br> <a href="contact.html" class="btn btn-primary" style="margin-top:18px;display:inline-flex">Book a Consultation →</a>
+            </div>
             <div class="acc-img"><img src="Oral surgery.jpeg" alt="Oral surgery" /></div>
           </div>
         </div>
@@ -649,7 +659,12 @@
 
 <script>
   document.querySelectorAll('.acc-head').forEach(h=>{
-    h.addEventListener('click',()=>h.parentElement.classList.toggle('open'));
+    h.addEventListener('click',()=>{
+      const parent = h.parentElement;
+      const isOpen = parent.classList.contains('open');
+      document.querySelectorAll('.acc').forEach(a=>a.classList.remove('open'));
+      if(!isOpen) parent.classList.add('open');
+    });
   });
 
   // Before/After slider
