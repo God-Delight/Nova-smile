@@ -240,38 +240,38 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
         <h2>Confirm Your Visit to<br/>Novasmile Dental Clinic</h2>
         <p class="lede">Get expert care in a modern, welcoming <span class="clinic">clinic</span>. It only takes a minute to book, we will follow up to confirm your visit.</p>
 
-        <form class="form-grid" onsubmit="event.preventDefault();alert('Thanks! We will follow up to confirm your visit.');">
+       <form class="form-grid" id="bookingForm">
           <div class="field">
             <label>Full Name *</label>
-            <input type="text" placeholder="Your Full Name" required />
+            <input type="text" name="full_name" placeholder="Your Full Name" required />
           </div>
           <div class="field">
             <label>Phone Number *</label>
-            <input type="tel" placeholder="Your Phone Number" required />
+            <input type="tel" name="phone_number" placeholder="Your Phone Number" required />
           </div>
           <div class="field">
             <label>Email Address</label>
-            <input type="email" placeholder="Your Email Address" />
+            <input type="email" name="_replyto" placeholder="Your Email Address" />
           </div>
           <div class="field date-wrap">
             <label>Preferred Date</label>
-            <input type="date" id="apptDate" />
+            <input type="date" id="apptDate" name="preferred_date" />
             <p id="dateMsg" style="font-size:13px;margin-top:6px;color:red;display:none">We are closed on Sundays. Please select another day.</p>
           </div>
           <div class="field select-wrap">
             <label>Preferred Time Slot</label>
-            <select id="apptTime">
+            <select id="apptTime" name="preferred_time">
               <option value="">Select a date first</option>
             </select>
           </div>
           <br>
           <div class="field" style="grid-column:1/-1">
             <label for="message">REASON FOR VISIT</label>
-            <textarea id="message" name="message" rows="6" placeholder="Tell us briefly what's bothering you or what you'd like to improve — we'll take it from there." style="width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:12px;font-family:'Nunito',sans-serif;font-size:15px;color:var(--black);resize:vertical;outline:none;transition:.2s" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--line)'"></textarea>
+            <textarea id="message" name="message" rows="6" placeholder="Tell us briefly what's bothering you or what you'd like to improve and we'll take it from there." style="width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:12px;font-family:'Nunito',sans-serif;font-size:15px;color:var(--black);resize:vertical;outline:none;transition:.2s" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--line)'"></textarea>
           </div>
 
           <div class="submit-row" style="grid-column:1/-1">
-            <button type="submit" class="submit-btn">Confirm My Appointment</button>
+           <button type="submit" class="submit-btn">Confirm My Appointment</button>
           </div>
         </form>
       </div>
@@ -409,6 +409,43 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
       opt.value = slot;
       opt.textContent = slot;
       timeSelect.appendChild(opt);
+    });
+  });
+</script>
+
+<script>
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwtK79gLMns0q_ApmoILS9fI6kQbmWhevGVbHIg7ljztIAUOui_6qZpzVlYWFJyCTtVIA/exec';
+
+  document.getElementById('bookingForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const form = this;
+    const btn = form.querySelector('.submit-btn');
+
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    const payload = {
+      name:     form.querySelector('[name="full_name"]').value,
+      phone:    form.querySelector('[name="phone_number"]').value,
+      email:    form.querySelector('[name="_replyto"]').value,
+      date:     form.querySelector('[name="preferred_date"]').value,
+      timeslot: form.querySelector('[name="preferred_time"]').value,
+      reason:   form.querySelector('[name="message"]').value
+    };
+
+    fetch(SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(function(){
+      window.location.href = 'thankyou.html';
+    })
+    .catch(function(){
+      btn.textContent = 'Confirm My Appointment';
+      btn.disabled = false;
+      alert('Something went wrong. Please try again or call us directly on 07075645166.');
     });
   });
 </script>
