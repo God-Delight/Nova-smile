@@ -257,6 +257,8 @@
     }
     .error-msg.show { display: block; }
   </style>
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+  <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 </head>
 <body>
 
@@ -362,8 +364,13 @@
         </div>
       </div>
       <div class="form-field">
+        <label>Short Excerpt *</label>
+        <input type="text" id="postExcerpt" placeholder="A short description of the article (1-2 sentences)" />
+    </div>
+    <div class="form-field">
         <label>Post Body *</label>
-        <textarea id="postBody" placeholder="Write your article here..."></textarea>
+        <div id="postBodyEditor" style="background:#fff;border-radius:8px;min-height:280px"></div>
+        <input type="hidden" id="postBody" />
       </div>
       <div class="modal-actions">
         <button class="btn-cancel" onclick="closeModal()">Cancel</button>
@@ -373,18 +380,31 @@
   </div>
 
   <script type="module">
+  const quill = new Quill('#postBodyEditor', {
+  theme: 'snow',
+  placeholder: 'Write your article here...',
+  modules: {
+    toolbar: [
+      [{ header: [2, 3, false] }],
+      ['bold', 'italic', 'underline'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      ['blockquote'],
+      ['clean']
+    ]
+  }
+});
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
-      apiKey: "AIzaSyAEa9BtvYs2RjSvRrZZLb2Pz3P-9Xfo5jI",
-      authDomain: "nova-smile-404b5.firebaseapp.com",
-      projectId: "nova-smile-404b5",
-      storageBucket: "nova-smile-404b5.firebasestorage.app",
-      messagingSenderId: "205119413201",
-      appId: "1:205119413201:web:3e7027c9bf16978206def0"
-    };
+  apiKey: "AIzaSyAEa9BtvYs2RjSvRrZZLb2Pz3P-9Xfo5jI",
+  authDomain: "nova-smile-404b5.firebaseapp.com",
+  projectId: "nova-smile-404b5",
+  storageBucket: "nova-smile-404b5.firebasestorage.app",
+  messagingSenderId: "205119413201",
+  appId: "1:205119413201:web:3e7027c9bf16978206def0"
+};
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -459,7 +479,8 @@
       document.getElementById('postAuthor').value = '';
       document.getElementById('postReadTime').value = '';
       document.getElementById('postImage').value = '';
-      document.getElementById('postBody').value = '';
+      document.getElementById('postExcerpt').value = '';
+      quill.root.innerHTML = '';
       document.getElementById('publishBtn').textContent = 'Publish Post';
       document.getElementById('successMsg').classList.remove('show');
       document.getElementById('errorMsg').classList.remove('show');
@@ -474,7 +495,8 @@
       document.getElementById('postAuthor').value = data.author || '';
       document.getElementById('postReadTime').value = data.readTime || '';
       document.getElementById('postImage').value = data.image || '';
-      document.getElementById('postBody').value = data.body || '';
+      document.getElementById('postExcerpt').value = data.excerpt || '';
+      quill.root.innerHTML = data.body || '';
       document.getElementById('publishBtn').textContent = 'Save Changes';
       document.getElementById('successMsg').classList.remove('show');
       document.getElementById('errorMsg').classList.remove('show');
@@ -492,12 +514,13 @@
       const author = document.getElementById('postAuthor').value.trim();
       const readTime = document.getElementById('postReadTime').value.trim();
       const image = document.getElementById('postImage').value.trim();
-      const body = document.getElementById('postBody').value.trim();
+      const body = quill.root.innerHTML.trim();
+      const excerpt = document.getElementById('postExcerpt').value.trim();
       const btn = document.getElementById('publishBtn');
       const errorMsg = document.getElementById('errorMsg');
       const successMsg = document.getElementById('successMsg');
 
-      if (!title || !category || !author || !body) {
+      if (!title || !category || !author || !body || !excerpt) {
         errorMsg.textContent = 'Please fill in all required fields.';
         errorMsg.classList.add('show');
         return;
@@ -508,7 +531,7 @@
       errorMsg.classList.remove('show');
 
       try {
-        const postData = { title, category, author, readTime, image, body };
+        const postData = { title, category, author, readTime, image, body, excerpt };
 
         if (editingId) {
           await updateDoc(doc(db, 'posts', editingId), postData);

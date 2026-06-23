@@ -108,10 +108,11 @@
       <label>Email Address</label>
       <input type="email" id="email" placeholder="admin@novasmile.com" />
     </div>
-    <div class="field">
-      <label>Password</label>
-      <input type="password" id="password" placeholder="••••••••" />
-    </div>
+  <div class="field" style="position:relative">
+    <label>Password</label>
+   <input type="password" id="password" placeholder="••••••••" style="padding-right:48px" />
+   <button type="button" onclick="togglePassword()" style="position:absolute;right:14px;bottom:13px;background:none;border:none;cursor:pointer;color:#888;font-size:13px;font-weight:700">SHOW</button>
+</div>
     <button class="btn-login" id="loginBtn" onclick="handleLogin()">Sign In</button>
   </div>
 
@@ -120,14 +121,13 @@
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
     const firebaseConfig = {
-      apiKey: "REPLACE_WITH_ENV_KEY",
-      authDomain: "nova-smile-404b5.firebaseapp.com",
-      projectId: "nova-smile-404b5",
-      storageBucket: "nova-smile-404b5.firebasestorage.app",
-      messagingSenderId: "205119413201",
-      appId: "1:205119413201:web:3e7027c9bf16978206def0"
-    };
-
+  apiKey: "AIzaSyAEa9BtvYs2RjSvRrZZLb2Pz3P-9Xfo5jI",
+  authDomain: "nova-smile-404b5.firebaseapp.com",
+  projectId: "nova-smile-404b5",
+  storageBucket: "nova-smile-404b5.firebasestorage.app",
+  messagingSenderId: "205119413201",
+  appId: "1:205119413201:web:3e7027c9bf16978206def0"
+};
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
@@ -166,6 +166,18 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') window.handleLogin();
     });
+
+    window.togglePassword = function() {
+  const input = document.getElementById('password');
+  const btn = event.currentTarget;
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.textContent = 'HIDE';
+  } else {
+    input.type = 'password';
+    btn.textContent = 'SHOW';
+  }
+}
   </script>
 </body>
 </html>

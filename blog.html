@@ -180,11 +180,13 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
 
 <!-- DRAWER OVERLAY -->
 <div class="drawer-overlay" id="drawerOverlay"></div>
+
+
 <!-- SIDE DRAWER -->
   <div class="side-drawer" id="sideDrawer">
   <button class="drawer-close" id="drawerClose">✕</button>
   <a href="index.html" onclick="closeDrawer()">Home</a>
-  <a href="index.html#services" onclick="closeDrawer()">Services</a>
+  <a href="services.html" onclick="closeDrawer()">Services</a>
   <a href="about.html" onclick="closeDrawer()">About</a>
   <a href="#" onclick="closeDrawer()">Blog</a>
   <a href="contact.html" onclick="closeDrawer()">Contact</a>
@@ -220,7 +222,7 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
     <div class="container">
       <span class="eyebrow">Our Blog</span>
       <h1>Smart dental insights<br/>for a healthier smile.</h1>
-      <p>Tips, guides and clinic updates from the Novasmile team,helping you take better care of your teeth between visits.</p>
+      <p>Tips, guides and clinic updates from the Novasmile team — helping you take better care of your teeth between visits.</p>
       <div class="cat-bar">
         <button class="cat active" data-cat="all">All Posts</button>
         <button class="cat" data-cat="oral-care">Oral Care</button>
@@ -236,15 +238,19 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
 <!-- FEATURED POST -->
 <section class="featured">
   <div class="container">
-    <div class="feat-card">
-      <div class="ph"><img src="blog hero.jpg" alt="Featured: Daily habits for healthier teeth" /></div>
-      <div class="cp">
-        <span class="eyebrow">Featured Article</span>
-        <h2>5 daily habits that quietly transform your oral health.</h2>
-        <div class="meta"><span>Dr. Adeyemi</span><span>Jun 12, 2026</span><span>6 min read</span></div>
-        <p>Small, consistent habits do more for your teeth than any single appointment ever could. Here's what our hygienists wish every patient knew — explained simply, with no jargon.</p>
-        <a href="article.html" class="read">Read Article →</a>
-      </div>
+    <div class="featured-card" id="featuredCard">
+  <div class="feat-img">
+    <img id="featImg" src="blog-placeholder.jpg" alt="" />
+  </div>
+  <div class="feat-content">
+    <span class="tag" id="featTag">Loading...</span>
+    <h2 id="featTitle"></h2>
+    <p id="featExcerpt"></p>
+    <div class="meta">
+      <span id="featMeta"></span>
+    </div>
+    <a href="#" id="featLink" class="btn btn-primary">Read Article</a>
+     </div>
     </div>
   </div>
 </section>
@@ -289,55 +295,110 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
   </div>
 </footer>
 
-<script>
-  const posts = [
-    ["oral-care","Oral Care","The right way to brush — most people get this wrong.","A two-minute brush with the wrong technique can do less than 30 seconds done right. Here's the method our hygienists teach every new patient.","blog2.jpg","Dr. Adeyemi","Jun 8, 2026","4 min"],
-    ["cosmetic","Cosmetic","Veneers vs. bonding: which one is actually right for you?","Both can transform a smile — but they solve different problems, last different lengths of time, and cost very differently. A clear breakdown.","grid1.jpg","Dr. Okafor","Jun 3, 2026","7 min"],
-    ["kids","Kids","When should your child first see a dentist?","Earlier than most parents think. Here's what to expect at a first visit and how to make it a positive experience for your little one.","woman-smile.jpg","Dr. Adeyemi","May 28, 2026","5 min"],
-    ["orthodontics","Orthodontics","Clear aligners vs. traditional braces in 2026.","Aligners have come a long way, but braces still win for certain cases. A side-by-side look at cost, comfort, treatment time and results.","after-teeth.jpg","Dr. Okafor","May 21, 2026","8 min"],
-    ["oral-care","Oral Care","Bleeding gums? Don't ignore it.","Gum bleeding is one of the earliest signs of trouble — and one of the easiest to reverse if you catch it in time. Here's what to do.","dentist.jpg","Dr. Adeyemi","May 14, 2026","5 min"],
-    ["cosmetic","Cosmetic","Teeth whitening: at-home kits vs. in-clinic treatments.","Drugstore strips, mouth trays, LED kits, in-chair whitening — what actually works, what's safe, and what you can skip.","before-after.jpg","Dr. Okafor","May 7, 2026","6 min"],
-    ["news","Clinic News","Welcoming our new pediatric dentist to the team.","We're excited to introduce Dr. Yusuf, joining us full-time to lead our growing kids dentistry programme.","grid2.jpg","Novasmile","Apr 30, 2026","2 min"],
-    ["oral-care","Oral Care","Flossing: still the most underrated habit in dentistry.","If you brush but don't floss, you're missing 35% of every tooth's surface. Here's why it matters more than mouthwash.","grid3.jpg","Dr. Adeyemi","Apr 22, 2026","4 min"],
-    ["news","Clinic News","Now offering Saturday appointments.","Good news for our working patients — we've expanded our weekly schedule to include Saturday mornings, starting this month.","appointment.jpg","Novasmile","Apr 15, 2026","2 min"],
-  ];
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, getDocs, getDoc, doc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+  apiKey: "AIzaSyAEa9BtvYs2RjSvRrZZLb2Pz3P-9Xfo5jI",
+  authDomain: "nova-smile-404b5.firebaseapp.com",
+  projectId: "nova-smile-404b5",
+  storageBucket: "nova-smile-404b5.firebasestorage.app",
+  messagingSenderId: "205119413201",
+  appId: "1:205119413201:web:3e7027c9bf16978206def0"
+};
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  async function loadFeaturedPost() {
+  try {
+    const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'), limit(1));
+    const snapshot = await getDocs(q);
+    if (snapshot.empty) return;
+
+    const p = { id: snapshot.docs[0].id, ...snapshot.docs[0].data() };
+    const date = p.createdAt ? p.createdAt.toDate().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+
+    document.getElementById('featImg').src = p.image || 'blog-placeholder.jpg';
+    document.getElementById('featImg').alt = p.title;
+    document.getElementById('featTag').textContent = p.category || 'Article';
+    document.getElementById('featTitle').textContent = p.title;
+    document.getElementById('featExcerpt').textContent = p.excerpt || '';
+    document.getElementById('featMeta').textContent = (p.author || '') + ' · ' + date + (p.readTime ? ' · ' + p.readTime : '');
+    document.getElementById('featLink').href = 'article.html?id=' + p.id;
+  } catch (e) {
+    console.error('Featured post error:', e);
+  }
+}
+
+loadFeaturedPost();
 
   const grid = document.getElementById('postsGrid');
-  function render(filter){
+  let allPosts = [];
+
+  // Category slug map
+  const catSlug = {
+    'Oral Care': 'oral-care',
+    'Cosmetic': 'cosmetic',
+    'Kids': 'kids',
+    'Orthodontics': 'orthodontics',
+    'Clinic News': 'news'
+  };
+
+  function render(filter) {
     grid.innerHTML = '';
-    posts.filter(p => filter==='all' || p[0]===filter).forEach(p=>{
+    const filtered = filter === 'all' ? allPosts : allPosts.filter(p => catSlug[p.category] === filter);
+    if (!filtered.length) {
+      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px 0;color:rgba(255,255,255,0.8)">No articles in this category yet — check back soon.</p>';
+      return;
+    }
+    filtered.forEach(p => {
+      const date = p.createdAt ? p.createdAt.toDate().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+      const excerpt = p.body ? p.body.substring(0, 120) + '...' : '';
       const el = document.createElement('article');
       el.className = 'post';
       el.innerHTML = `
-        <div class="ph"><img src="${p[4]}" alt="${p[2]}"/></div>
+        <div class="ph"><img src="${p.image || 'blog-placeholder.jpg'}" alt="${p.title}" onerror="this.style.background='#e6f6fa'" /></div>
         <div class="cp">
-          <span class="tag">${p[1]}</span>
-          <h3>${p[2]}</h3>
-          <p class="ex">${p[3]}</p>
-          <div class="meta"><span>${p[5]} · ${p[6]}</span><a href="#">Read →</a></div>
+          <span class="tag">${p.category || 'General'}</span>
+          <h3>${p.title}</h3>
+          <p class="ex">${excerpt}</p>
+          <div class="meta"><span>${p.author} · ${date}</span><a href="article.html?id=${p.id}">Read →</a></div>
         </div>`;
       grid.appendChild(el);
     });
-    if(!grid.children.length){
-      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px 0">No articles in this category yet — check back soon.</p>';
+  }
+
+  async function loadPosts() {
+    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px 0;color:rgba(255,255,255,0.8)">Loading articles...</p>';
+    try {
+      const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'));
+      const snapshot = await getDocs(q);
+      allPosts = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      render('all');
+    } catch (e) {
+      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px 0;color:rgba(255,255,255,0.8)">Could not load articles. Please try again later.</p>';
     }
   }
-  render('all');
-  document.querySelectorAll('.cat').forEach(b=>{
-    b.addEventListener('click',()=>{
-      document.querySelectorAll('.cat').forEach(x=>x.classList.remove('active'));
+
+  loadPosts();
+
+  document.querySelectorAll('.cat').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.cat').forEach(x => x.classList.remove('active'));
       b.classList.add('active');
       render(b.dataset.cat);
     });
   });
-  
- //mobile side drawer and hamburger logic
-  function closeDrawer(){
+
+  // Mobile drawer
+  function closeDrawer() {
     document.getElementById('sideDrawer').classList.remove('open');
     document.getElementById('drawerOverlay').classList.remove('open');
     document.getElementById('hamburgerBtn').classList.remove('open');
   }
-  document.getElementById('hamburgerBtn').addEventListener('click',function(){
+  window.closeDrawer = closeDrawer;
+  document.getElementById('hamburgerBtn').addEventListener('click', function() {
     this.classList.toggle('open');
     document.getElementById('sideDrawer').classList.toggle('open');
     document.getElementById('drawerOverlay').classList.toggle('open');

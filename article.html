@@ -216,7 +216,7 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
   <div class="side-drawer" id="sideDrawer">
   <button class="drawer-close" id="drawerClose">✕</button>
   <a href="index.html" onclick="closeDrawer()">Home</a>
-  <a href="index.html#services" onclick="closeDrawer()">Services</a>
+  <a href="services.html" onclick="closeDrawer()">Services</a>
   <a href="about.html" onclick="closeDrawer()">About</a>
   <a href="blog.html" onclick="closeDrawer()">Blog</a>
   <a href="contact.html" onclick="closeDrawer()">Contact</a>
@@ -426,15 +426,122 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
   </div>
 </footer>
 
-<script>
-   
- //mobile side drawer and hamburger logic
-  function closeDrawer(){
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, doc, getDoc, collection, getDocs, orderBy, query, limit } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+  apiKey: "AIzaSyAEa9BtvYs2RjSvRrZZLb2Pz3P-9Xfo5jI",
+  authDomain: "nova-smile-404b5.firebaseapp.com",
+  projectId: "nova-smile-404b5",
+  storageBucket: "nova-smile-404b5.firebasestorage.app",
+  messagingSenderId: "205119413201",
+  appId: "1:205119413201:web:3e7027c9bf16978206def0"
+};
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Get post ID from URL
+  const params = new URLSearchParams(window.location.search);
+  const postId = params.get('id');
+
+  async function loadArticle() {
+    if (!postId) {
+      window.location.href = 'blog.html';
+      return;
+    }
+    try {
+      const docRef = doc(db, 'posts', postId);
+      const docSnap = await getDoc(docRef);
+      if (!docSnap.exists()) {
+        window.location.href = 'blog.html';
+        return;
+      }
+      const p = { id: docSnap.id, ...docSnap.data() };
+      const date = p.createdAt ? p.createdAt.toDate().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+
+      // Update page title
+      document.title = `${p.title} — Novasmile`;
+
+      // Update article head
+      document.querySelector('.art-head .tag').textContent = p.category || 'Article';
+      document.querySelector('.art-head h1').textContent = p.title;
+      document.querySelector('.art-head .lede').textContent = p.excerpt || '';
+      document.querySelector('.byline .author').textContent = p.author || '';
+      document.querySelectorAll('.byline span')[2].textContent = date;
+      document.querySelectorAll('.byline span')[4].textContent = p.readTime || '';
+
+      // Update hero image
+      const heroImg = document.querySelector('.art-hero .frame img');
+      if (heroImg && p.image) heroImg.src = p.image;
+
+      // Update body - render body text as paragraphs
+    const prose = document.querySelector('.prose');
+    if (prose && p.body) {
+    prose.innerHTML = p.body;
+    }
+
+      // Update author card
+      const authorCard = document.querySelector('.author-card h4');
+      if (authorCard) authorCard.textContent = p.author || '';
+      const initials = (p.author || 'N').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+      const av = document.querySelector('.author-card .av');
+      if (av) av.textContent = initials;
+      const bylineAv = document.querySelector('.byline .avatar');
+      if (bylineAv) bylineAv.textContent = initials;
+
+      // Update breadcrumb
+      const crumbs = document.querySelector('.art-head .crumbs');
+      if (crumbs) crumbs.innerHTML = `<a href="blog.html">Blog</a> &nbsp;/&nbsp; ${p.category || 'Article'}`;
+
+      // Load related posts
+      loadRelated(postId, p.category);
+
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function loadRelated(currentId, category) {
+    try {
+      const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'), limit(6));
+      const snapshot = await getDocs(q);
+      const related = snapshot.docs
+        .map(d => ({ id: d.id, ...d.data() }))
+        .filter(p => p.id !== currentId)
+        .slice(0, 3);
+
+      const relGrid = document.querySelector('.related .grid');
+      if (!relGrid || !related.length) return;
+      relGrid.innerHTML = related.map(p => {
+        const excerpt = p.body ? p.body.substring(0, 100) + '...' : '';
+        return `
+          <article class="post">
+            <div class="ph"><img src="${p.image || 'blog-placeholder.jpg'}" alt="${p.title}" onerror="this.style.background='#e6f6fa'" /></div>
+            <div class="cp">
+              <span class="tag">${p.category || 'General'}</span>
+              <h3>${p.title}</h3>
+              <p class="ex">${excerpt}</p>
+              <div class="meta"><span>${p.author} · ${p.readTime || ''}</span><a href="article.html?id=${p.id}">Read →</a></div>
+            </div>
+          </article>`;
+      }).join('');
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  loadArticle();
+
+  // Mobile drawer
+  function closeDrawer() {
     document.getElementById('sideDrawer').classList.remove('open');
     document.getElementById('drawerOverlay').classList.remove('open');
     document.getElementById('hamburgerBtn').classList.remove('open');
   }
-  document.getElementById('hamburgerBtn').addEventListener('click',function(){
+  window.closeDrawer = closeDrawer;
+  document.getElementById('hamburgerBtn').addEventListener('click', function() {
     this.classList.toggle('open');
     document.getElementById('sideDrawer').classList.toggle('open');
     document.getElementById('drawerOverlay').classList.toggle('open');
