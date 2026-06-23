@@ -329,14 +329,24 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
             <li><a href="#">5. Show up for check-ups</a></li>
           </ul>
         </div>
-        <div class="share">
-          <h4>Share This</h4>
-          <div class="row">
-            <a href="#" aria-label="Share on Twitter">X</a>
-            <a href="#" aria-label="Share on Facebook">f</a>
-            <a href="#" aria-label="Share on LinkedIn">in</a>
-            <a href="#" aria-label="Copy link">↗</a>
-          </div>
+         <div class="share" id="shareRow">
+            <h4>Share This Article</h4>
+            <div class="row">
+              <a id="shareFb" target="_blank" title="Share on Facebook">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+             </a>
+             <a id="shareTw" target="_blank" title="Share on X (Twitter)">
+               <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M4 4l16 16M4 20L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </a>
+           <a id="shareWa" target="_blank" title="Share on WhatsApp">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.535 5.874L.057 23.643a.75.75 0 0 0 .916.932l5.978-1.474A11.954 11.954 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.964-1.364l-.355-.214-3.684.909.944-3.588-.233-.368A9.719 9.719 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+          </a>
+          <a id="shareCopy" title="Copy link" style="cursor:pointer">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+         </a>
+      </div>
+      <p id="copyMsg" style="font-size:12px;color:var(--peach);margin-top:8px;display:none">Link copied!</p>
+    </div>
         </div>
       </aside>
     </div>
@@ -463,7 +473,18 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
 
       // Update page title
       document.title = `${p.title} — Novasmile`;
-
+      const pageUrl = encodeURIComponent(window.location.href);
+const pageTitle = encodeURIComponent(p.title);
+document.getElementById('shareFb').href = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+document.getElementById('shareTw').href = `https://twitter.com/intent/tweet?url=${pageUrl}&text=${pageTitle}`;
+document.getElementById('shareWa').href = `https://wa.me/?text=${pageTitle}%20${pageUrl}`;
+document.getElementById('shareCopy').addEventListener('click', () => {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    const msg = document.getElementById('copyMsg');
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 2000);
+  });
+});
       // Update article head
       document.querySelector('.art-head .tag').textContent = p.category || 'Article';
       document.querySelector('.art-head h1').textContent = p.title;
@@ -478,14 +499,30 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
 
       // Update body - render body text as paragraphs
     const prose = document.querySelector('.prose');
-    if (prose && p.body) {
-    prose.innerHTML = p.body;
-    }
+  if (prose && p.body) {
+  prose.innerHTML = p.body;
+
+  // Auto-generate sidebar from h2 headings
+  const headings = prose.querySelectorAll('h2');
+  const sideList = document.querySelector('.side ul');
+  if (sideList && headings.length) {
+    sideList.innerHTML = '';
+    headings.forEach((heading, i) => {
+      const id = 'section-' + i;
+      heading.id = id;
+      const li = document.createElement('li');
+      li.innerHTML = `<a href="#${id}">${heading.textContent}</a>`;
+      sideList.appendChild(li);
+    });
+  }
+}
 
       // Update author card
-      const authorCard = document.querySelector('.author-card h4');
-      if (authorCard) authorCard.textContent = p.author || '';
-      const initials = (p.author || 'N').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+      const authorBio = document.querySelector('.author-card p');
+      if (authorBio) authorBio.textContent = p.authorBio || '';
+      const authorBio = document.querySelector('.author-card p');
+      if (authorBio) authorBio.textContent = p.authorBio || '';
+      const initials = p.authorInitials || (p.author || 'N').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
       const av = document.querySelector('.author-card .av');
       if (av) av.textContent = initials;
       const bylineAv = document.querySelector('.byline .avatar');

@@ -209,7 +209,8 @@
     .form-field textarea:focus { border-color: #0097B5; }
     .form-field textarea { min-height: 180px; resize: vertical; line-height: 1.65; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px; }
+    .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; flex-wrap: wrap; }
+    .modal-actions button { flex-shrink: 0; }
     .btn-cancel {
       background: none;
       border: 1.5px solid #dde8ea;
@@ -224,7 +225,7 @@
     .btn-publish {
       background: #0097B5;
       color: #fff;
-      border: none;
+      border: 1.5px solid #0097B5;
       border-radius: 10px;
       padding: 11px 28px;
       font-family: 'Nunito', sans-serif;
@@ -348,10 +349,15 @@
             <option value="Clinic News">Clinic News</option>
           </select>
         </div>
-        <div class="form-field">
-          <label>Author Name *</label>
-          <input type="text" id="postAuthor" placeholder="e.g. Dr. Adeyemi" />
-        </div>
+      <div class="form-field">
+        <label>Author *</label>
+        <select id="postAuthor">
+         <option value="">Select author</option>
+        </select>
+    </div>
+      <div class="form-field">
+        <label>Author Bio</label>
+        <textarea id="postAuthorBio" placeholder="Short bio about the author (shows on the article page)..." style="min-height:80px;resize:vertical"></textarea>
       </div>
       <div class="form-row">
         <div class="form-field">
@@ -369,7 +375,7 @@
     </div>
     <div class="form-field">
         <label>Post Body *</label>
-        <div id="postBodyEditor" style="background:#fff;border-radius:8px;min-height:280px"></div>
+        <div id="postBodyEditor" style="background:#fff;border-radius:8px;min-height:280px;max-width:100%;overflow:hidden"></div>
         <input type="hidden" id="postBody" />
       </div>
       <div class="modal-actions">
@@ -395,7 +401,7 @@
 });
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, getDoc, updateDoc, serverTimestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
   apiKey: "AIzaSyAEa9BtvYs2RjSvRrZZLb2Pz3P-9Xfo5jI",
@@ -411,6 +417,21 @@
     const db = getFirestore(app);
 
     let editingId = null;
+    let authorsMap = {};
+
+async function loadAuthors() {
+  const snapshot = await getDocs(collection(db, 'authors'));
+  const select = document.getElementById('postAuthor');
+  select.innerHTML = '<option value="">Select author</option>';
+  snapshot.forEach(d => {
+    const data = d.data();
+    authorsMap[d.id] = data;
+    const option = document.createElement('option');
+    option.value = d.id;
+    option.textContent = data.name;
+    select.appendChild(option);
+  });
+}
 
     // Auth guard
     onAuthStateChanged(auth, (user) => {
@@ -419,6 +440,7 @@
       } else {
         document.getElementById('userEmail').textContent = user.email;
         loadPosts();
+        loadAuthors();
       }
     });
 
@@ -492,7 +514,9 @@
       document.getElementById('modalTitle').textContent = 'Edit Post';
       document.getElementById('postTitle').value = data.title || '';
       document.getElementById('postCategory').value = data.category || '';
-      document.getElementById('postAuthor').value = data.author || '';
+      const authorSelect = document.getElementById('postAuthor');
+      const matchingOption = Array.from(authorSelect.options).find(o => o.textContent === data.author);
+      if (matchingOption) authorSelect.value = matchingOption.value;
       document.getElementById('postReadTime').value = data.readTime || '';
       document.getElementById('postImage').value = data.image || '';
       document.getElementById('postExcerpt').value = data.excerpt || '';
@@ -511,7 +535,11 @@
     window.handlePublish = async function() {
       const title = document.getElementById('postTitle').value.trim();
       const category = document.getElementById('postCategory').value;
-      const author = document.getElementById('postAuthor').value.trim();
+      const authorId = document.getElementById('postAuthor').value;
+      const authorData = authorsMap[authorId] || {};
+      const author = authorData.name || '';
+      const authorBio = authorData.bio || '';
+      const authorInitials = authorData.initials || '';
       const readTime = document.getElementById('postReadTime').value.trim();
       const image = document.getElementById('postImage').value.trim();
       const body = quill.root.innerHTML.trim();
@@ -520,7 +548,7 @@
       const errorMsg = document.getElementById('errorMsg');
       const successMsg = document.getElementById('successMsg');
 
-      if (!title || !category || !author || !body || !excerpt) {
+      if (!title || !category || !authorId || !body || !excerpt) {
         errorMsg.textContent = 'Please fill in all required fields.';
         errorMsg.classList.add('show');
         return;
@@ -531,7 +559,7 @@
       errorMsg.classList.remove('show');
 
       try {
-        const postData = { title, category, author, readTime, image, body, excerpt };
+        const postData = { title, category, author, authorBio, authorInitials, readTime, image, body, excerpt };
 
         if (editingId) {
           await updateDoc(doc(db, 'posts', editingId), postData);
