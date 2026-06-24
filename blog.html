@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Blog — Novasmile Dental Studios</title>
-<meta name="description" content="Dental tips, oral-health guides and clinic news from the team at Novasmile Dental Studios — helping you care for your smile between visits." />
+<meta name="description" content="Dental tips, oral-health guides and clinic news from the team at Novasmile Dental Studios, helping you care for your smile between visits." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -324,7 +324,7 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
     document.getElementById('featTag').textContent = p.category || 'Article';
     document.getElementById('featTitle').textContent = p.title;
     document.getElementById('featExcerpt').textContent = p.excerpt || '';
-    document.getElementById('featMeta').textContent = (p.author || '') + ' · ' + date + (p.readTime ? ' · ' + p.readTime : '');
+    document.getElementById('featMeta').textContent = date + (p.readTime ? ' · ' + p.readTime : '');
     document.getElementById('featLink').href = 'article.html?id=' + p.id;
   } catch (e) {
     console.error('Featured post error:', e);
@@ -363,8 +363,8 @@ loadFeaturedPost();
           <span class="tag">${p.category || 'General'}</span>
           <h3>${p.title}</h3>
           <p class="ex">${excerpt}</p>
-          <div class="meta"><span>${p.author} · ${date}</span><a href="article.html?id=${p.id}">Read →</a></div>
-        </div>`;
+          <div class="meta"><span>${date}</span><a href="article.html?id=${p.id}">Read →</a></div>
+          </div>`;
       grid.appendChild(el);
     });
   }

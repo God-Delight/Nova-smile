@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="Favicon.png" />
+  <link rel="apple-touch-icon" href="Favicon.png" />
   <title>Novasmile Admin Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
@@ -306,7 +308,6 @@
           <tr>
             <th>Title</th>
             <th>Category</th>
-            <th>Author</th>
             <th>Date</th>
             <th>Actions</th>
           </tr>
@@ -348,17 +349,8 @@
             <option value="Orthodontics">Orthodontics</option>
             <option value="Clinic News">Clinic News</option>
           </select>
-        </div>
-      <div class="form-field">
-        <label>Author *</label>
-        <select id="postAuthor">
-         <option value="">Select author</option>
-        </select>
-    </div>
-      <div class="form-field">
-        <label>Author Bio</label>
-        <textarea id="postAuthorBio" placeholder="Short bio about the author (shows on the article page)..." style="min-height:80px;resize:vertical"></textarea>
       </div>
+    </div>
       <div class="form-row">
         <div class="form-field">
           <label>Read Time</label>
@@ -377,12 +369,11 @@
         <label>Post Body *</label>
         <div id="postBodyEditor" style="background:#fff;border-radius:8px;min-height:280px;max-width:100%;overflow:hidden"></div>
         <input type="hidden" id="postBody" />
-      </div>
+    </div>
       <div class="modal-actions">
         <button class="btn-cancel" onclick="closeModal()">Cancel</button>
         <button class="btn-publish" id="publishBtn" onclick="handlePublish()">Publish Post</button>
       </div>
-    </div>
   </div>
 
   <script type="module">
@@ -417,21 +408,6 @@
     const db = getFirestore(app);
 
     let editingId = null;
-    let authorsMap = {};
-
-async function loadAuthors() {
-  const snapshot = await getDocs(collection(db, 'authors'));
-  const select = document.getElementById('postAuthor');
-  select.innerHTML = '<option value="">Select author</option>';
-  snapshot.forEach(d => {
-    const data = d.data();
-    authorsMap[d.id] = data;
-    const option = document.createElement('option');
-    option.value = d.id;
-    option.textContent = data.name;
-    select.appendChild(option);
-  });
-}
 
     // Auth guard
     onAuthStateChanged(auth, (user) => {
@@ -440,7 +416,6 @@ async function loadAuthors() {
       } else {
         document.getElementById('userEmail').textContent = user.email;
         loadPosts();
-        loadAuthors();
       }
     });
 
@@ -481,7 +456,6 @@ async function loadAuthors() {
           <tr>
             <td><div class="post-title">${p.title}</div></td>
             <td><span class="post-cat">${p.category || 'Uncategorised'}</span></td>
-            <td>${p.author || 'N/A'}</td>
             <td class="post-date">${date}</td>
             <td>
               <button class="btn-edit" onclick="openEditModal('${p.id}', ${JSON.stringify(p).replace(/"/g, '&quot;')})">Edit</button>
@@ -498,7 +472,6 @@ async function loadAuthors() {
       document.getElementById('modalTitle').textContent = 'New Post';
       document.getElementById('postTitle').value = '';
       document.getElementById('postCategory').value = '';
-      document.getElementById('postAuthor').value = '';
       document.getElementById('postReadTime').value = '';
       document.getElementById('postImage').value = '';
       document.getElementById('postExcerpt').value = '';
@@ -514,9 +487,6 @@ async function loadAuthors() {
       document.getElementById('modalTitle').textContent = 'Edit Post';
       document.getElementById('postTitle').value = data.title || '';
       document.getElementById('postCategory').value = data.category || '';
-      const authorSelect = document.getElementById('postAuthor');
-      const matchingOption = Array.from(authorSelect.options).find(o => o.textContent === data.author);
-      if (matchingOption) authorSelect.value = matchingOption.value;
       document.getElementById('postReadTime').value = data.readTime || '';
       document.getElementById('postImage').value = data.image || '';
       document.getElementById('postExcerpt').value = data.excerpt || '';
@@ -535,11 +505,6 @@ async function loadAuthors() {
     window.handlePublish = async function() {
       const title = document.getElementById('postTitle').value.trim();
       const category = document.getElementById('postCategory').value;
-      const authorId = document.getElementById('postAuthor').value;
-      const authorData = authorsMap[authorId] || {};
-      const author = authorData.name || '';
-      const authorBio = authorData.bio || '';
-      const authorInitials = authorData.initials || '';
       const readTime = document.getElementById('postReadTime').value.trim();
       const image = document.getElementById('postImage').value.trim();
       const body = quill.root.innerHTML.trim();
@@ -548,7 +513,7 @@ async function loadAuthors() {
       const errorMsg = document.getElementById('errorMsg');
       const successMsg = document.getElementById('successMsg');
 
-      if (!title || !category || !authorId || !body || !excerpt) {
+      if (!title || !category || !body || !excerpt) {
         errorMsg.textContent = 'Please fill in all required fields.';
         errorMsg.classList.add('show');
         return;
@@ -559,7 +524,7 @@ async function loadAuthors() {
       errorMsg.classList.remove('show');
 
       try {
-        const postData = { title, category, author, authorBio, authorInitials, readTime, image, body, excerpt };
+        const postData = { title, category, readTime, image, body, excerpt };
 
         if (editingId) {
           await updateDoc(doc(db, 'posts', editingId), postData);

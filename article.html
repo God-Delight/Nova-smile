@@ -77,7 +77,6 @@
   .art-head .lede{font-size:18px;max-width:760px;color:#fff;margin-bottom:30px}
   .byline{display:flex;flex-wrap:wrap;gap:18px;align-items:center;font-size:13.5px;font-weight:600;color:rgba(255,255,255,0.75)}
   .byline .avatar{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.2);color:var(--white);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px}
-  .byline .author{color:#fff;font-weight:700}
   .byline .dot{width:3px;height:3px;background:rgba(255,255,255,0.5);border-radius:50%;display:inline-block}
 
   /* HERO IMAGE */
@@ -123,10 +122,6 @@
   .art-foot{max-width:1000px;margin:40px auto 0;border-top:1px solid var(--line);padding-top:30px}
   .tag-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:30px}
   .tag-list span{font-size:12px;font-weight:700;padding:6px 14px;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
-  .author-card{display:flex;gap:18px;align-items:center;background:var(--bg-soft);border-radius:14px;padding:24px}
-  .author-card .av{width:64px;height:64px;border-radius:50%;background:var(--teal);color:var(--white);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:22px;flex-shrink:0}
-  .author-card h4{font-size:16px;margin-bottom:4px}
-  .author-card p{font-size:13.5px;margin:0}
 
   /* RELATED */
   .related{background:var(--teal);padding:80px 0}
@@ -185,7 +180,6 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
     .related .grid{grid-template-columns:1fr;gap:22px}
     .cta-banner{height:340px}
     .foot-bottom{flex-direction:column;gap:12px;text-align:center}
-    .author-card{flex-direction:column;text-align:center}
   }
   .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px;z-index:100}
   .hamburger span{display:block;width:24px;height:2px;background:var(--black);border-radius:2px;transition:.3s}
@@ -253,8 +247,6 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
     <h1>5 daily habits that quietly transform your oral health.</h1>
     <p class="lede">Small, consistent habits do more for your teeth than any single appointment ever could. Here's what our hygienists wish every patient knew — explained simply, with no jargon.</p>
     <div class="byline">
-      <div class="avatar">DA</div>
-      <span class="author">Dr. Adeyemi</span>
       <span class="dot"></span>
       <span>Jun 12, 2026</span>
       <span class="dot"></span>
@@ -358,13 +350,6 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
         <span>Prevention</span>
         <span>Fluoride</span>
         <span>Daily Routine</span>
-      </div>
-      <div class="author-card">
-        <div class="av">DA</div>
-        <div>
-          <h4>Dr. Adeyemi</h4>
-          <p>Lead dentist at Novasmile Dental Studios. Twelve years treating patients across general, cosmetic and pediatric dentistry — and a quiet evangelist for the unglamorous basics.</p>
-        </div>
       </div>
     </div>
   </div>
@@ -489,7 +474,6 @@ document.getElementById('shareCopy').addEventListener('click', () => {
       document.querySelector('.art-head .tag').textContent = p.category || 'Article';
       document.querySelector('.art-head h1').textContent = p.title;
       document.querySelector('.art-head .lede').textContent = p.excerpt || '';
-      document.querySelector('.byline .author').textContent = p.author || '';
       document.querySelectorAll('.byline span')[2].textContent = date;
       document.querySelectorAll('.byline span')[4].textContent = p.readTime || '';
 
@@ -516,17 +500,6 @@ document.getElementById('shareCopy').addEventListener('click', () => {
     });
   }
 }
-
-      // Update author card
-      const authorBio = document.querySelector('.author-card p');
-      if (authorBio) authorBio.textContent = p.authorBio || '';
-      const authorBio = document.querySelector('.author-card p');
-      if (authorBio) authorBio.textContent = p.authorBio || '';
-      const initials = p.authorInitials || (p.author || 'N').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
-      const av = document.querySelector('.author-card .av');
-      if (av) av.textContent = initials;
-      const bylineAv = document.querySelector('.byline .avatar');
-      if (bylineAv) bylineAv.textContent = initials;
 
       // Update breadcrumb
       const crumbs = document.querySelector('.art-head .crumbs');
@@ -560,8 +533,8 @@ document.getElementById('shareCopy').addEventListener('click', () => {
               <span class="tag">${p.category || 'General'}</span>
               <h3>${p.title}</h3>
               <p class="ex">${excerpt}</p>
-              <div class="meta"><span>${p.author} · ${p.readTime || ''}</span><a href="article.html?id=${p.id}">Read →</a></div>
-            </div>
+              <div class="meta"><span>${p.readTime || ''}</span><a href="article.html?id=${p.id}">Read →</a></div>
+              </div>
           </article>`;
       }).join('');
     } catch (e) {
