@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { max-width: 100%; overflow-x: hidden; }
     body { font-family: 'Nunito', sans-serif; background: #f3f7f9; color: #333; }
 
     /* TOPBAR */
@@ -301,6 +302,19 @@
       color: #666;
       cursor: pointer;
     }
+    .btn-draft {
+      background: #fff2e0;
+      color: #b8722f;
+      border: 1.5px solid #fff2e0;
+      border-radius: 10px;
+      padding: 11px 24px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+    .btn-draft:hover { background: #ffe7c9; }
+    .btn-draft:disabled { background: #eee; color: #aaa; cursor: not-allowed; }
     .btn-publish {
       background: #0097B5;
       color: #fff;
@@ -350,6 +364,8 @@
       .btn-new { width: 100%; }
       .modal { padding: 24px 20px; }
       .form-row { grid-template-columns: 1fr; gap: 0; }
+      .modal-actions { flex-direction: column-reverse; }
+      .modal-actions button { width: 100%; }
       .toolbar { flex-direction: column; align-items: stretch; }
       .status-filter { justify-content: space-between; }
       .status-filter button { flex: 1; }
@@ -481,18 +497,9 @@
           </select>
       </div>
     </div>
-      <div class="form-row">
-        <div class="form-field">
-          <label>Read Time</label>
-          <input type="text" id="postReadTime" placeholder="e.g. 5 min read" />
-        </div>
-        <div class="form-field">
-          <label>Status</label>
-          <select id="postStatus">
-            <option value="published">Published</option>
-            <option value="draft">Draft</option>
-          </select>
-        </div>
+      <div class="form-field">
+        <label>Read Time</label>
+        <input type="text" id="postReadTime" placeholder="e.g. 5 min read" />
       </div>
       <div class="form-field">
         <label>Cover Image URL *</label>
@@ -508,8 +515,9 @@
         <input type="hidden" id="postBody" />
     </div>
       <div class="modal-actions">
-        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-        <button class="btn-publish" id="publishBtn" onclick="handlePublish()">Publish Post</button>
+        <button class="btn-cancel" id="cancelBtn" onclick="closeModal()">Cancel</button>
+        <button class="btn-draft" id="draftBtn" onclick="handleSave('draft')">Save as Draft</button>
+        <button class="btn-publish" id="publishBtn" onclick="handleSave('published')">Publish Post</button>
       </div>
   </div>
 
@@ -698,10 +706,10 @@
       document.getElementById('postTitle').value = '';
       document.getElementById('postCategory').value = '';
       document.getElementById('postReadTime').value = '';
-      document.getElementById('postStatus').value = 'published';
       document.getElementById('postImage').value = '';
       document.getElementById('postExcerpt').value = '';
       quill.root.innerHTML = '';
+      document.getElementById('draftBtn').textContent = 'Save as Draft';
       document.getElementById('publishBtn').textContent = 'Publish Post';
       document.getElementById('successMsg').classList.remove('show');
       document.getElementById('errorMsg').classList.remove('show');
@@ -714,11 +722,11 @@
       document.getElementById('postTitle').value = data.title || '';
       document.getElementById('postCategory').value = data.category || '';
       document.getElementById('postReadTime').value = data.readTime || '';
-      document.getElementById('postStatus').value = data.status || 'published';
       document.getElementById('postImage').value = data.image || '';
       document.getElementById('postExcerpt').value = data.excerpt || '';
       quill.root.innerHTML = data.body || '';
-      document.getElementById('publishBtn').textContent = 'Save Changes';
+      document.getElementById('draftBtn').textContent = 'Save as Draft';
+      document.getElementById('publishBtn').textContent = 'Save & Publish';
       document.getElementById('successMsg').classList.remove('show');
       document.getElementById('errorMsg').classList.remove('show');
       document.getElementById('modalOverlay').classList.add('open');
@@ -728,16 +736,18 @@
       document.getElementById('modalOverlay').classList.remove('open');
     }
 
-    // Publish / update post
-    window.handlePublish = async function() {
+    // Save post as either 'draft' or 'published' — status comes from which
+    // button was clicked, not from a select the user could forget to change.
+    window.handleSave = async function(status) {
       const title = document.getElementById('postTitle').value.trim();
       const category = document.getElementById('postCategory').value;
       const readTime = document.getElementById('postReadTime').value.trim();
-      const status = document.getElementById('postStatus').value;
       const image = document.getElementById('postImage').value.trim();
       const body = quill.root.innerHTML.trim();
       const excerpt = document.getElementById('postExcerpt').value.trim();
-      const btn = document.getElementById('publishBtn');
+      const draftBtn = document.getElementById('draftBtn');
+      const publishBtn = document.getElementById('publishBtn');
+      const cancelBtn = document.getElementById('cancelBtn');
       const errorMsg = document.getElementById('errorMsg');
       const successMsg = document.getElementById('successMsg');
 
@@ -747,8 +757,14 @@
         return;
       }
 
-      btn.disabled = true;
-      btn.textContent = 'Saving...';
+      const clickedBtn = status === 'draft' ? draftBtn : publishBtn;
+      const draftLabel = 'Save as Draft';
+      const publishLabel = editingId ? 'Save & Publish' : 'Publish Post';
+
+      draftBtn.disabled = true;
+      publishBtn.disabled = true;
+      cancelBtn.disabled = true;
+      clickedBtn.textContent = 'Saving...';
       errorMsg.classList.remove('show');
 
       try {
@@ -756,22 +772,23 @@
 
         if (editingId) {
           await updateDoc(doc(db, 'posts', editingId), postData);
-          successMsg.textContent = 'Post updated successfully.';
+          successMsg.textContent = status === 'draft' ? 'Post saved as draft.' : 'Post updated and published.';
         } else {
           await addDoc(collection(db, 'posts'), { ...postData, views: 0, createdAt: serverTimestamp() });
-          successMsg.textContent = 'Post published successfully.';
+          successMsg.textContent = status === 'draft' ? 'Post saved as draft.' : 'Post published successfully.';
         }
 
         successMsg.classList.add('show');
-        btn.disabled = false;
-        btn.textContent = editingId ? 'Save Changes' : 'Publish Post';
         loadPosts();
         setTimeout(closeModal, 1500);
       } catch (err) {
         errorMsg.textContent = 'Something went wrong. Please try again.';
         errorMsg.classList.add('show');
-        btn.disabled = false;
-        btn.textContent = editingId ? 'Save Changes' : 'Publish Post';
+        draftBtn.disabled = false;
+        publishBtn.disabled = false;
+        cancelBtn.disabled = false;
+        draftBtn.textContent = draftLabel;
+        publishBtn.textContent = publishLabel;
       }
     }
 
