@@ -3,8 +3,6 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="icon" type="image/png" href="Favicon.png" />
-<link rel="apple-touch-icon" href="Favicon.png" />
 <title>5 Daily Habits That Quietly Transform Your Oral Health — Novasmile</title>
 <meta name="description" content="Small, consistent habits do more for your teeth than any single appointment. Our hygienists at Novasmile share the five daily routines that quietly change everything." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -58,11 +56,14 @@
     border:none;cursor:pointer;border-radius:999px;
     padding:14px 26px;transition:.2s ease;
   }
-  .btn-primary{background:var(--teal);color:var(--white)}
-  .btn-primary:hover{background:#007a93}
+  .btn-primary{background:var(--peach);color:var(--black)}
+  .btn-primary:hover{background:var(--teal);color:var(--white)}
   .btn-peach{background:var(--peach);color:var(--black)}
-  .btn-peach:hover{background:#ff9a44}
-  .btn-outline{background:var(--white);color:var(--black);border:1px solid var(--line)}
+  .btn-peach:hover{background:var(--teal);color:var(--white)}
+  .btn-outline{background:transparent;color:var(--teal);border:2px solid var(--teal)}
+  .btn-outline:hover{background:var(--peach);color:var(--black);border-color:var(--peach)}
+  .btn-outline-white{background:transparent;color:var(--peach);border:2px solid var(--peach)}
+  .btn-outline-white:hover{background:var(--peach);color:var(--black);border-color:var(--peach)}
   .btn-dark{background:var(--black);color:var(--white)}
   .btn-sm{padding:10px 18px;font-size:14px}
   section{padding:80px 0}
@@ -132,8 +133,8 @@
   .post h3{font-size:17px;font-weight:800;line-height:1.3;margin-bottom:10px}
   .post p.ex{font-size:13.5px;margin-bottom:18px;flex:1}
   .post .meta{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);font-weight:600;border-top:1px solid var(--line);padding-top:14px}
-  .post .meta a{color:var(--black);font-weight:700}
-  .post .meta a:hover{color:var(--teal)}
+  .post .meta .read-link{color:var(--black);font-weight:700}
+  .post:hover .meta .read-link{color:var(--teal)}
   /* APPOINTMENT CTA */
   .appt{position:relative;border-radius:0;overflow:hidden;padding:0;height:520px}
   .appt img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -146,10 +147,26 @@
   .appt h2{color:var(--white);max-width:560px}
   .appt p{color:rgba(255,255,255,.85);margin-top:14px;max-width:480px;font-size:15px}
   .appt .btn{margin-top:24px}
+  /* PAGE LOADER — hides the static template so visitors never see it
+     before the real article swaps in */
+  .page-loader{
+    position:fixed;inset:0;z-index:999;
+    background:var(--white);
+    display:flex;align-items:center;justify-content:center;
+    transition:opacity .3s ease;
+  }
+  .page-loader.hide{opacity:0;pointer-events:none}
+  .page-loader .spinner{
+    width:40px;height:40px;border-radius:50%;
+    border:3px solid var(--teal-soft);
+    border-top-color:var(--teal);
+    animation:spin .7s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
  /* FOOTER */
-footer{background:#0C3D47;color:#fff;overflow:hidden}
+footer{background:#036D82;color:#fff;overflow:hidden}
 footer .container{padding:80px 24px 24px;max-width:1280px}
-footer .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:40px}
+footer .grid{display:grid;grid-template-columns:1fr;gap:32px}
 @media(min-width:768px){footer .grid{grid-template-columns:2fr 1fr 1fr 1fr 1fr}}
 footer h3{font-size:24px;font-weight:800}
 footer h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--peach);margin-bottom:12px}
@@ -199,6 +216,8 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
 </script>
 </head>
 <body>
+<!-- PAGE LOADER -->
+<div class="page-loader" id="pageLoader"><div class="spinner"></div></div>
 <!-- DRAWER OVERLAY -->
 <div class="drawer-overlay" id="drawerOverlay"></div>
 <!-- SIDE DRAWER -->
@@ -340,33 +359,33 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
       <a href="blog.html" class="btn btn-peach" style="margin-top:18px">View All Articles →</a>
     </div>
     <div class="grid">
-      <article class="post">
+      <a class="post" href="#">
         <div class="ph"><img src="smile.jpg" alt="Proper brushing technique" /></div>
         <div class="cp">
           <span class="tag">Oral Care</span>
           <h3>The right way to brush — most people get this wrong.</h3>
           <p class="ex">A two-minute brush with the wrong technique can do less than 30 seconds done right. Here's the method our hygienists teach every new patient.</p>
-          <div class="meta"><span>Dr. Adeyemi · 4 min</span><a href="#">Read →</a></div>
+          <div class="meta"><span>Dr. Adeyemi · 4 min</span><span class="read-link">Read →</span></div>
         </div>
-      </article>
-      <article class="post">
+      </a>
+      <a class="post" href="#">
         <div class="ph"><img src="closeup-smile-young-cheerful-african-man.jpg" alt="Healthy gums" /></div>
         <div class="cp">
           <span class="tag">Oral Care</span>
           <h3>Bleeding gums? Don't ignore it.</h3>
           <p class="ex">Gum bleeding is one of the earliest signs of trouble — and one of the easiest to reverse if you catch it in time. Here's what to do.</p>
-          <div class="meta"><span>Dr. Adeyemi · 5 min</span><a href="#">Read →</a></div>
+          <div class="meta"><span>Dr. Adeyemi · 5 min</span><span class="read-link">Read →</span></div>
         </div>
-      </article>
-      <article class="post">
+      </a>
+      <a class="post" href="#">
         <div class="ph"><img src="medium-shot-smiley-woman-posing.jpg" alt="Flossing technique" /></div>
         <div class="cp">
           <span class="tag">Oral Care</span>
           <h3>Flossing: still the most underrated habit in dentistry.</h3>
           <p class="ex">If you brush but don't floss, you're missing 35% of every tooth's surface. Here's why it matters more than mouthwash.</p>
-          <div class="meta"><span>Dr. Adeyemi · 4 min</span><a href="#">Read →</a></div>
+          <div class="meta"><span>Dr. Adeyemi · 4 min</span><span class="read-link">Read →</span></div>
         </div>
-      </article>
+      </a>
     </div>
   </div>
 </section>
@@ -377,7 +396,7 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
     <div class="container">
       <h2>Schedule an appointment<br/>with us today!</h2>
       <p>Whether you're visiting for a routine check-up or a more advanced procedure, we ensure your oral health is in the best hands, helping you achieve a confident, healthy smile.</p>
-      <a href="#" class="btn btn-outline">Schedule An Appointment</a>
+      <a href="contact.html" class="btn btn-primary">Schedule An Appointment</a>
     </div>
   </div>
 </section>
@@ -459,9 +478,16 @@ document.getElementById('shareCopy').addEventListener('click', () => {
       if (crumbs) crumbs.innerHTML = `<a href="blog.html">Blog</a> &nbsp;/&nbsp; ${p.category || 'Article'}`;
       // Load related posts
       loadRelated(postId, p.category);
+      // Real content is in place now — reveal the page
+      hidePageLoader();
     } catch (e) {
       console.error(e);
+      hidePageLoader();
     }
+  }
+  function hidePageLoader() {
+    const loader = document.getElementById('pageLoader');
+    if (loader) loader.classList.add('hide');
   }
   async function loadRelated(currentId, category) {
     try {
@@ -476,15 +502,15 @@ document.getElementById('shareCopy').addEventListener('click', () => {
       relGrid.innerHTML = related.map(p => {
         const excerpt = p.body ? p.body.substring(0, 100) + '...' : '';
         return `
-          <article class="post">
+          <a class="post" href="article.html?id=${p.id}">
             <div class="ph"><img src="${p.image || 'blog-placeholder.jpg'}" alt="${p.title}" onerror="this.style.background='#e6f6fa'" /></div>
             <div class="cp">
               <span class="tag">${p.category || 'General'}</span>
               <h3>${p.title}</h3>
               <p class="ex">${excerpt}</p>
-              <div class="meta"><span>${p.readTime || ''}</span><a href="article.html?id=${p.id}">Read →</a></div>
+              <div class="meta"><span>${p.readTime || ''}</span><span class="read-link">Read →</span></div>
               </div>
-          </article>`;
+          </a>`;
       }).join('');
     } catch (e) {
       console.error(e);
@@ -496,9 +522,14 @@ document.getElementById('shareCopy').addEventListener('click', () => {
   function buildTOC() {
     const prose = document.querySelector('.prose');
     const sideList = document.querySelector('.side ul');
+    const tocCard = document.querySelector('.side .card');
     if (!prose || !sideList) return;
     const headings = prose.querySelectorAll('h2');
-    if (!headings.length) return;
+    if (!headings.length) {
+      if (tocCard) tocCard.style.display = 'none';
+      return;
+    }
+    if (tocCard) tocCard.style.display = '';
     const NAV_OFFSET = 110; // space for the fixed nav
     sideList.innerHTML = '';
     headings.forEach((heading, i) => {

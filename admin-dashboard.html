@@ -82,7 +82,7 @@
     .btn-new:hover { background: #007a93; }
 
     /* STATS */
-    .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 20px; }
+    .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-bottom: 20px; }
     .stat-card {
       background: #fff;
       border-radius: 14px;
@@ -126,20 +126,6 @@
       transition: border-color 0.2s;
     }
     .search-input:focus { border-color: #0097B5; }
-    .status-filter { display: flex; gap: 6px; background: #fff; border: 1.5px solid #e8f0f2; border-radius: 10px; padding: 4px; flex-shrink: 0; }
-    .status-filter button {
-      background: none;
-      border: none;
-      border-radius: 7px;
-      padding: 7px 14px;
-      font-family: 'Nunito', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: #888;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .status-filter button.active { background: #0097B5; color: #fff; }
 
     /* POSTS TABLE */
     .posts-wrap {
@@ -181,18 +167,6 @@
     }
     .post-date { color: #888; font-size: 0.82rem; }
     .post-views { color: #555; font-size: 0.85rem; font-weight: 700; }
-    .status-badge {
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 50px;
-      display: inline-block;
-      border: none;
-      cursor: pointer;
-      font-family: 'Nunito', sans-serif;
-    }
-    .status-badge.published { background: #e6f6fa; color: #0097B5; }
-    .status-badge.draft { background: #fff2e0; color: #b8722f; }
     .th-sortable { cursor: pointer; user-select: none; white-space: nowrap; }
     .th-sortable:hover { color: #0097B5; }
     .btn-edit {
@@ -302,19 +276,6 @@
       color: #666;
       cursor: pointer;
     }
-    .btn-draft {
-      background: #fff2e0;
-      color: #b8722f;
-      border: 1.5px solid #fff2e0;
-      border-radius: 10px;
-      padding: 11px 24px;
-      font-family: 'Nunito', sans-serif;
-      font-weight: 800;
-      font-size: 0.88rem;
-      cursor: pointer;
-    }
-    .btn-draft:hover { background: #ffe7c9; }
-    .btn-draft:disabled { background: #eee; color: #aaa; cursor: not-allowed; }
     .btn-publish {
       background: #0097B5;
       color: #fff;
@@ -367,8 +328,6 @@
       .modal-actions { flex-direction: column-reverse; }
       .modal-actions button { width: 100%; }
       .toolbar { flex-direction: column; align-items: stretch; }
-      .status-filter { justify-content: space-between; }
-      .status-filter button { flex: 1; }
       .cat-row .cat-name { width: 80px; font-size: 0.78rem; }
     }
 
@@ -394,7 +353,7 @@
   <!-- TOPBAR -->
   <div class="topbar">
     <div class="topbar-left">
-      <img src="logo-nav.png" alt="Novasmile" onerror="this.style.display='none'" />
+      <img src="logo-trim.png" alt="Novasmile" onerror="this.style.display='none'" />
       <span>/ Admin</span>
     </div>
     <div class="topbar-right">
@@ -408,7 +367,7 @@
     <div class="page-header">
       <div>
         <h1>Blog Posts</h1>
-        <p>Manage all published and draft articles</p>
+        <p>Manage all published articles</p>
       </div>
       <button class="btn-new" onclick="openModal()">+ New Post</button>
     </div>
@@ -423,10 +382,6 @@
         <div class="num" id="publishedPosts">0</div>
       </div>
       <div class="stat-card">
-        <div class="label">Drafts</div>
-        <div class="num" id="draftPosts">0</div>
-      </div>
-      <div class="stat-card">
         <div class="label">Total Views</div>
         <div class="num" id="totalViews">0</div>
       </div>
@@ -439,11 +394,6 @@
 
     <div class="toolbar">
       <input type="text" class="search-input" id="searchInput" placeholder="Search posts by title..." oninput="renderPosts()" />
-      <div class="status-filter" id="statusFilter">
-        <button class="active" data-filter="all" onclick="setStatusFilter('all')">All</button>
-        <button data-filter="published" onclick="setStatusFilter('published')">Published</button>
-        <button data-filter="draft" onclick="setStatusFilter('draft')">Drafts</button>
-      </div>
     </div>
 
     <div class="posts-wrap">
@@ -452,7 +402,6 @@
           <tr>
             <th>Title</th>
             <th>Category</th>
-            <th>Status</th>
             <th class="th-sortable" onclick="toggleSort('views')" id="viewsHeader">Views ⇅</th>
             <th class="th-sortable" onclick="toggleSort('date')" id="dateHeader">Date ⇅</th>
             <th>Actions</th>
@@ -460,7 +409,7 @@
         </thead>
         <tbody id="postsBody">
           <tr>
-            <td colspan="6">
+            <td colspan="5">
               <div class="empty-state">
                 <p>No posts yet. Click <strong>New Post</strong> to get started.</p>
               </div>
@@ -516,8 +465,7 @@
     </div>
       <div class="modal-actions">
         <button class="btn-cancel" id="cancelBtn" onclick="closeModal()">Cancel</button>
-        <button class="btn-draft" id="draftBtn" onclick="handleSave('draft')">Save as Draft</button>
-        <button class="btn-publish" id="publishBtn" onclick="handleSave('published')">Publish Post</button>
+        <button class="btn-publish" id="publishBtn" onclick="handlePublish()">Publish Post</button>
       </div>
   </div>
 
@@ -554,7 +502,6 @@
 
     let editingId = null;
     let allPosts = [];
-    let statusFilter = 'all';
     let sortField = 'date';
     let sortDir = 'desc';
 
@@ -596,7 +543,6 @@
     function renderStats() {
       document.getElementById('totalPosts').textContent = allPosts.length;
       document.getElementById('publishedPosts').textContent = allPosts.filter(p => p.status === 'published').length;
-      document.getElementById('draftPosts').textContent = allPosts.filter(p => p.status === 'draft').length;
       const totalViews = allPosts.reduce((sum, p) => sum + (p.views || 0), 0);
       document.getElementById('totalViews').textContent = totalViews.toLocaleString();
     }
@@ -628,9 +574,7 @@
       const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
 
       let posts = allPosts.filter(p => {
-        const matchesSearch = !searchTerm || (p.title || '').toLowerCase().includes(searchTerm);
-        const matchesStatus = statusFilter === 'all' || p.status === statusFilter;
-        return matchesSearch && matchesStatus;
+        return !searchTerm || (p.title || '').toLowerCase().includes(searchTerm);
       });
 
       posts.sort((a, b) => {
@@ -649,19 +593,17 @@
       if (posts.length === 0) {
         const msg = allPosts.length === 0
           ? 'No posts yet. Click <strong>New Post</strong> to get started.'
-          : 'No posts match your search or filter.';
-        tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><p>${msg}</p></div></td></tr>`;
+          : 'No posts match your search.';
+        tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><p>${msg}</p></div></td></tr>`;
         return;
       }
 
       tbody.innerHTML = posts.map(p => {
         const date = p.createdAt ? p.createdAt.toDate().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A';
-        const statusLabel = p.status === 'draft' ? 'Draft' : 'Published';
         return `
           <tr>
             <td><div class="post-title">${p.title}</div></td>
             <td><span class="post-cat">${p.category || 'Uncategorised'}</span></td>
-            <td><button class="status-badge ${p.status}" onclick="toggleStatus('${p.id}', '${p.status}')" title="Click to toggle status">${statusLabel}</button></td>
             <td class="post-views">${(p.views || 0).toLocaleString()}</td>
             <td class="post-date">${date}</td>
             <td>
@@ -671,14 +613,6 @@
           </tr>
         `;
       }).join('');
-    }
-
-    window.setStatusFilter = function(filter) {
-      statusFilter = filter;
-      document.querySelectorAll('#statusFilter button').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.filter === filter);
-      });
-      renderPosts();
     }
 
     window.toggleSort = function(field) {
@@ -693,12 +627,6 @@
       renderPosts();
     }
 
-    window.toggleStatus = async function(id, currentStatus) {
-      const newStatus = currentStatus === 'draft' ? 'published' : 'draft';
-      await updateDoc(doc(db, 'posts', id), { status: newStatus });
-      loadPosts();
-    }
-
     // Open modal
     window.openModal = function() {
       editingId = null;
@@ -709,7 +637,6 @@
       document.getElementById('postImage').value = '';
       document.getElementById('postExcerpt').value = '';
       quill.root.innerHTML = '';
-      document.getElementById('draftBtn').textContent = 'Save as Draft';
       document.getElementById('publishBtn').textContent = 'Publish Post';
       document.getElementById('successMsg').classList.remove('show');
       document.getElementById('errorMsg').classList.remove('show');
@@ -725,8 +652,7 @@
       document.getElementById('postImage').value = data.image || '';
       document.getElementById('postExcerpt').value = data.excerpt || '';
       quill.root.innerHTML = data.body || '';
-      document.getElementById('draftBtn').textContent = 'Save as Draft';
-      document.getElementById('publishBtn').textContent = 'Save & Publish';
+      document.getElementById('publishBtn').textContent = 'Save Changes';
       document.getElementById('successMsg').classList.remove('show');
       document.getElementById('errorMsg').classList.remove('show');
       document.getElementById('modalOverlay').classList.add('open');
@@ -737,15 +663,15 @@
     }
 
     // Save post as either 'draft' or 'published' — status comes from which
-    // button was clicked, not from a select the user could forget to change.
-    window.handleSave = async function(status) {
+    // Publish / update post — every post created here is always published;
+    // there's no draft state to accidentally leave a post in.
+    window.handlePublish = async function() {
       const title = document.getElementById('postTitle').value.trim();
       const category = document.getElementById('postCategory').value;
       const readTime = document.getElementById('postReadTime').value.trim();
       const image = document.getElementById('postImage').value.trim();
       const body = quill.root.innerHTML.trim();
       const excerpt = document.getElementById('postExcerpt').value.trim();
-      const draftBtn = document.getElementById('draftBtn');
       const publishBtn = document.getElementById('publishBtn');
       const cancelBtn = document.getElementById('cancelBtn');
       const errorMsg = document.getElementById('errorMsg');
@@ -757,25 +683,22 @@
         return;
       }
 
-      const clickedBtn = status === 'draft' ? draftBtn : publishBtn;
-      const draftLabel = 'Save as Draft';
-      const publishLabel = editingId ? 'Save & Publish' : 'Publish Post';
+      const publishLabel = editingId ? 'Save Changes' : 'Publish Post';
 
-      draftBtn.disabled = true;
       publishBtn.disabled = true;
       cancelBtn.disabled = true;
-      clickedBtn.textContent = 'Saving...';
+      publishBtn.textContent = 'Saving...';
       errorMsg.classList.remove('show');
 
       try {
-        const postData = { title, category, readTime, status, image, body, excerpt };
+        const postData = { title, category, readTime, status: 'published', image, body, excerpt };
 
         if (editingId) {
           await updateDoc(doc(db, 'posts', editingId), postData);
-          successMsg.textContent = status === 'draft' ? 'Post saved as draft.' : 'Post updated and published.';
+          successMsg.textContent = 'Post updated successfully.';
         } else {
           await addDoc(collection(db, 'posts'), { ...postData, views: 0, createdAt: serverTimestamp() });
-          successMsg.textContent = status === 'draft' ? 'Post saved as draft.' : 'Post published successfully.';
+          successMsg.textContent = 'Post published successfully.';
         }
 
         successMsg.classList.add('show');
@@ -784,10 +707,8 @@
       } catch (err) {
         errorMsg.textContent = 'Something went wrong. Please try again.';
         errorMsg.classList.add('show');
-        draftBtn.disabled = false;
         publishBtn.disabled = false;
         cancelBtn.disabled = false;
-        draftBtn.textContent = draftLabel;
         publishBtn.textContent = publishLabel;
       }
     }
