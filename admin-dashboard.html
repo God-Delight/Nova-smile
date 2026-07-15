@@ -15,7 +15,7 @@
     .topbar {
       background: #fff;
       padding: 0 32px;
-      height: 64px;
+      min-height: 64px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -23,12 +23,22 @@
       position: sticky;
       top: 0;
       z-index: 100;
+      gap: 12px;
+      flex-wrap: wrap;
     }
-    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .topbar-left { display: flex; align-items: center; gap: 12px; min-width: 0; flex-shrink: 0; }
     .topbar-left img { height: 32px; }
-    .topbar-left span { font-size: 0.8rem; color: #888; font-weight: 600; }
-    .topbar-right { display: flex; align-items: center; gap: 16px; }
-    .topbar-user { font-size: 0.85rem; font-weight: 700; color: #333; }
+    .topbar-left span { font-size: 0.8rem; color: #888; font-weight: 600; white-space: nowrap; }
+    .topbar-right { display: flex; align-items: center; gap: 16px; min-width: 0; }
+    .topbar-user {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #333;
+      max-width: 160px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
     .btn-logout {
       background: none;
       border: 1.5px solid #dde8ea;
@@ -50,6 +60,8 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 28px;
+      gap: 16px;
+      flex-wrap: wrap;
     }
     .page-header h1 { font-size: 1.4rem; font-weight: 900; color: #0d2b33; }
     .page-header p { font-size: 0.85rem; color: #888; margin-top: 2px; }
@@ -69,24 +81,74 @@
     .btn-new:hover { background: #007a93; }
 
     /* STATS */
-    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+    .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 20px; }
     .stat-card {
       background: #fff;
       border-radius: 14px;
       padding: 20px 24px;
       border: 1.5px solid #e8f0f2;
+      min-width: 0;
     }
     .stat-card .label { font-size: 0.78rem; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
     .stat-card .num { font-size: 1.8rem; font-weight: 900; color: #0097B5; }
+
+    /* CATEGORY BREAKDOWN */
+    .cat-breakdown {
+      background: #fff;
+      border-radius: 14px;
+      padding: 20px 24px;
+      border: 1.5px solid #e8f0f2;
+      margin-bottom: 28px;
+    }
+    .cat-breakdown h3 { font-size: 0.9rem; font-weight: 800; color: #0d2b33; margin-bottom: 16px; }
+    .cat-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .cat-row:last-child { margin-bottom: 0; }
+    .cat-row .cat-name { font-size: 0.82rem; font-weight: 700; color: #333; width: 110px; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .cat-row .cat-bar-track { flex: 1; background: #f0f5f7; border-radius: 50px; height: 10px; overflow: hidden; }
+    .cat-row .cat-bar-fill { height: 100%; background: linear-gradient(90deg, #0097B5, #FFAD66); border-radius: 50px; transition: width 0.4s ease; }
+    .cat-row .cat-count { font-size: 0.8rem; font-weight: 800; color: #0097B5; width: 34px; text-align: right; flex-shrink: 0; }
+    .cat-breakdown-empty { font-size: 0.85rem; color: #888; }
+
+    /* TOOLBAR (search + status filter) */
+    .toolbar { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+    .search-input {
+      flex: 1;
+      min-width: 200px;
+      padding: 10px 16px;
+      border: 1.5px solid #dde8ea;
+      border-radius: 10px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.85rem;
+      color: #333;
+      outline: none;
+      background: #fff;
+      transition: border-color 0.2s;
+    }
+    .search-input:focus { border-color: #0097B5; }
+    .status-filter { display: flex; gap: 6px; background: #fff; border: 1.5px solid #e8f0f2; border-radius: 10px; padding: 4px; flex-shrink: 0; }
+    .status-filter button {
+      background: none;
+      border: none;
+      border-radius: 7px;
+      padding: 7px 14px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #888;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .status-filter button.active { background: #0097B5; color: #fff; }
 
     /* POSTS TABLE */
     .posts-wrap {
       background: #fff;
       border-radius: 16px;
       border: 1.5px solid #e8f0f2;
-      overflow: hidden;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
-    .posts-wrap table { width: 100%; border-collapse: collapse; }
+    .posts-wrap table { width: 100%; min-width: 720px; border-collapse: collapse; }
     .posts-wrap th {
       text-align: left;
       padding: 14px 20px;
@@ -117,6 +179,21 @@
       display: inline-block;
     }
     .post-date { color: #888; font-size: 0.82rem; }
+    .post-views { color: #555; font-size: 0.85rem; font-weight: 700; }
+    .status-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 50px;
+      display: inline-block;
+      border: none;
+      cursor: pointer;
+      font-family: 'Nunito', sans-serif;
+    }
+    .status-badge.published { background: #e6f6fa; color: #0097B5; }
+    .status-badge.draft { background: #fff2e0; color: #b8722f; }
+    .th-sortable { cursor: pointer; user-select: none; white-space: nowrap; }
+    .th-sortable:hover { color: #0097B5; }
     .btn-edit {
       background: none;
       border: 1.5px solid #dde8ea;
@@ -259,6 +336,30 @@
       display: none;
     }
     .error-msg.show { display: block; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .topbar { padding: 10px 20px; }
+      .topbar-user { max-width: 120px; }
+      .main { padding: 20px; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      .stat-card { padding: 14px 12px; }
+      .stat-card .label { font-size: 0.68rem; }
+      .stat-card .num { font-size: 1.4rem; }
+      .page-header h1 { font-size: 1.2rem; }
+      .btn-new { width: 100%; }
+      .modal { padding: 24px 20px; }
+      .form-row { grid-template-columns: 1fr; gap: 0; }
+      .toolbar { flex-direction: column; align-items: stretch; }
+      .status-filter { justify-content: space-between; }
+      .status-filter button { flex: 1; }
+      .cat-row .cat-name { width: 80px; font-size: 0.78rem; }
+    }
+
+    @media (max-width: 480px) {
+      .topbar-left span { display: none; }
+      .stats { grid-template-columns: 1fr 1fr; }
+    }
   </style>
   <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
   <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
@@ -302,12 +403,30 @@
         <div class="num" id="totalPosts">0</div>
       </div>
       <div class="stat-card">
-        <div class="label">This Month</div>
-        <div class="num" id="monthPosts">0</div>
+        <div class="label">Published</div>
+        <div class="num" id="publishedPosts">0</div>
       </div>
       <div class="stat-card">
-        <div class="label">Categories</div>
-        <div class="num" id="totalCats">0</div>
+        <div class="label">Drafts</div>
+        <div class="num" id="draftPosts">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Total Views</div>
+        <div class="num" id="totalViews">0</div>
+      </div>
+    </div>
+
+    <div class="cat-breakdown">
+      <h3>Posts by Category</h3>
+      <div id="catBreakdown"><p class="cat-breakdown-empty">No posts yet.</p></div>
+    </div>
+
+    <div class="toolbar">
+      <input type="text" class="search-input" id="searchInput" placeholder="Search posts by title..." oninput="renderPosts()" />
+      <div class="status-filter" id="statusFilter">
+        <button class="active" data-filter="all" onclick="setStatusFilter('all')">All</button>
+        <button data-filter="published" onclick="setStatusFilter('published')">Published</button>
+        <button data-filter="draft" onclick="setStatusFilter('draft')">Drafts</button>
       </div>
     </div>
 
@@ -317,13 +436,15 @@
           <tr>
             <th>Title</th>
             <th>Category</th>
-            <th>Date</th>
+            <th>Status</th>
+            <th class="th-sortable" onclick="toggleSort('views')" id="viewsHeader">Views ⇅</th>
+            <th class="th-sortable" onclick="toggleSort('date')" id="dateHeader">Date ⇅</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody id="postsBody">
           <tr>
-            <td colspan="5">
+            <td colspan="6">
               <div class="empty-state">
                 <p>No posts yet. Click <strong>New Post</strong> to get started.</p>
               </div>
@@ -366,9 +487,16 @@
           <input type="text" id="postReadTime" placeholder="e.g. 5 min read" />
         </div>
         <div class="form-field">
-          <label>Cover Image URL *</label>
-          <input type="text" id="postImage" placeholder="https://..." />
+          <label>Status</label>
+          <select id="postStatus">
+            <option value="published">Published</option>
+            <option value="draft">Draft</option>
+          </select>
         </div>
+      </div>
+      <div class="form-field">
+        <label>Cover Image URL *</label>
+        <input type="text" id="postImage" placeholder="https://..." />
       </div>
       <div class="form-field">
         <label>Short Excerpt *</label>
@@ -417,6 +545,10 @@
     const db = getFirestore(app);
 
     let editingId = null;
+    let allPosts = [];
+    let statusFilter = 'all';
+    let sortField = 'date';
+    let sortDir = 'desc';
 
     // Auth guard
     onAuthStateChanged(auth, (user) => {
@@ -434,37 +566,95 @@
       window.location.href = 'admin-login.html';
     }
 
-    // Load posts
+    // Load posts from Firestore
     async function loadPosts() {
       const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'));
       const snapshot = await getDocs(q);
-      const posts = [];
-      snapshot.forEach(d => posts.push({ id: d.id, ...d.data() }));
-
-      // Stats
-      document.getElementById('totalPosts').textContent = posts.length;
-      const now = new Date();
-      const thisMonth = posts.filter(p => {
-        if (!p.createdAt) return false;
-        const d = p.createdAt.toDate();
-        return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+      allPosts = [];
+      snapshot.forEach(d => {
+        const data = d.data();
+        allPosts.push({
+          id: d.id,
+          ...data,
+          status: data.status || 'published', // posts created before this update default to published
+          views: typeof data.views === 'number' ? data.views : 0
+        });
       });
-      document.getElementById('monthPosts').textContent = thisMonth.length;
-      const cats = new Set(posts.map(p => p.category).filter(Boolean));
-      document.getElementById('totalCats').textContent = cats.size;
+      renderStats();
+      renderCategoryBreakdown();
+      renderPosts();
+    }
 
-      // Table
-      const tbody = document.getElementById('postsBody');
-      if (posts.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><p>No posts yet. Click <strong>New Post</strong> to get started.</p></div></td></tr>`;
+    function renderStats() {
+      document.getElementById('totalPosts').textContent = allPosts.length;
+      document.getElementById('publishedPosts').textContent = allPosts.filter(p => p.status === 'published').length;
+      document.getElementById('draftPosts').textContent = allPosts.filter(p => p.status === 'draft').length;
+      const totalViews = allPosts.reduce((sum, p) => sum + (p.views || 0), 0);
+      document.getElementById('totalViews').textContent = totalViews.toLocaleString();
+    }
+
+    function renderCategoryBreakdown() {
+      const wrap = document.getElementById('catBreakdown');
+      if (allPosts.length === 0) {
+        wrap.innerHTML = '<p class="cat-breakdown-empty">No posts yet.</p>';
         return;
       }
+      const counts = {};
+      allPosts.forEach(p => {
+        const cat = p.category || 'Uncategorised';
+        counts[cat] = (counts[cat] || 0) + 1;
+      });
+      const max = Math.max(...Object.values(counts));
+      const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+      wrap.innerHTML = sorted.map(([cat, count]) => `
+        <div class="cat-row">
+          <div class="cat-name">${cat}</div>
+          <div class="cat-bar-track"><div class="cat-bar-fill" style="width:${(count / max) * 100}%"></div></div>
+          <div class="cat-count">${count}</div>
+        </div>
+      `).join('');
+    }
+
+    // Filter, sort, and render the table (does not re-fetch from Firestore)
+    window.renderPosts = function() {
+      const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+
+      let posts = allPosts.filter(p => {
+        const matchesSearch = !searchTerm || (p.title || '').toLowerCase().includes(searchTerm);
+        const matchesStatus = statusFilter === 'all' || p.status === statusFilter;
+        return matchesSearch && matchesStatus;
+      });
+
+      posts.sort((a, b) => {
+        let valA, valB;
+        if (sortField === 'views') {
+          valA = a.views || 0;
+          valB = b.views || 0;
+        } else {
+          valA = a.createdAt ? a.createdAt.toDate().getTime() : 0;
+          valB = b.createdAt ? b.createdAt.toDate().getTime() : 0;
+        }
+        return sortDir === 'asc' ? valA - valB : valB - valA;
+      });
+
+      const tbody = document.getElementById('postsBody');
+      if (posts.length === 0) {
+        const msg = allPosts.length === 0
+          ? 'No posts yet. Click <strong>New Post</strong> to get started.'
+          : 'No posts match your search or filter.';
+        tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><p>${msg}</p></div></td></tr>`;
+        return;
+      }
+
       tbody.innerHTML = posts.map(p => {
         const date = p.createdAt ? p.createdAt.toDate().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A';
+        const statusLabel = p.status === 'draft' ? 'Draft' : 'Published';
         return `
           <tr>
             <td><div class="post-title">${p.title}</div></td>
             <td><span class="post-cat">${p.category || 'Uncategorised'}</span></td>
+            <td><button class="status-badge ${p.status}" onclick="toggleStatus('${p.id}', '${p.status}')" title="Click to toggle status">${statusLabel}</button></td>
+            <td class="post-views">${(p.views || 0).toLocaleString()}</td>
             <td class="post-date">${date}</td>
             <td>
               <button class="btn-edit" onclick="openEditModal('${p.id}', ${JSON.stringify(p).replace(/"/g, '&quot;')})">Edit</button>
@@ -475,6 +665,32 @@
       }).join('');
     }
 
+    window.setStatusFilter = function(filter) {
+      statusFilter = filter;
+      document.querySelectorAll('#statusFilter button').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.filter === filter);
+      });
+      renderPosts();
+    }
+
+    window.toggleSort = function(field) {
+      if (sortField === field) {
+        sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortField = field;
+        sortDir = 'desc';
+      }
+      document.getElementById('viewsHeader').textContent = field === 'views' ? `Views ${sortDir === 'asc' ? '↑' : '↓'}` : 'Views ⇅';
+      document.getElementById('dateHeader').textContent = field === 'date' ? `Date ${sortDir === 'asc' ? '↑' : '↓'}` : 'Date ⇅';
+      renderPosts();
+    }
+
+    window.toggleStatus = async function(id, currentStatus) {
+      const newStatus = currentStatus === 'draft' ? 'published' : 'draft';
+      await updateDoc(doc(db, 'posts', id), { status: newStatus });
+      loadPosts();
+    }
+
     // Open modal
     window.openModal = function() {
       editingId = null;
@@ -482,6 +698,7 @@
       document.getElementById('postTitle').value = '';
       document.getElementById('postCategory').value = '';
       document.getElementById('postReadTime').value = '';
+      document.getElementById('postStatus').value = 'published';
       document.getElementById('postImage').value = '';
       document.getElementById('postExcerpt').value = '';
       quill.root.innerHTML = '';
@@ -497,6 +714,7 @@
       document.getElementById('postTitle').value = data.title || '';
       document.getElementById('postCategory').value = data.category || '';
       document.getElementById('postReadTime').value = data.readTime || '';
+      document.getElementById('postStatus').value = data.status || 'published';
       document.getElementById('postImage').value = data.image || '';
       document.getElementById('postExcerpt').value = data.excerpt || '';
       quill.root.innerHTML = data.body || '';
@@ -515,6 +733,7 @@
       const title = document.getElementById('postTitle').value.trim();
       const category = document.getElementById('postCategory').value;
       const readTime = document.getElementById('postReadTime').value.trim();
+      const status = document.getElementById('postStatus').value;
       const image = document.getElementById('postImage').value.trim();
       const body = quill.root.innerHTML.trim();
       const excerpt = document.getElementById('postExcerpt').value.trim();
@@ -533,13 +752,13 @@
       errorMsg.classList.remove('show');
 
       try {
-        const postData = { title, category, readTime, image, body, excerpt };
+        const postData = { title, category, readTime, status, image, body, excerpt };
 
         if (editingId) {
           await updateDoc(doc(db, 'posts', editingId), postData);
           successMsg.textContent = 'Post updated successfully.';
         } else {
-          await addDoc(collection(db, 'posts'), { ...postData, createdAt: serverTimestamp() });
+          await addDoc(collection(db, 'posts'), { ...postData, views: 0, createdAt: serverTimestamp() });
           successMsg.textContent = 'Post published successfully.';
         }
 
