@@ -124,8 +124,11 @@
    <input type="password" id="password" placeholder="••••••••" style="padding-right:48px" />
    <button type="button" onclick="togglePassword()" style="position:absolute;right:14px;bottom:13px;background:none;border:none;cursor:pointer;color:#888;font-size:13px;font-weight:700">SHOW</button>
 </div>
-    <button class="btn-login" id="loginBtn" onclick="handleLogin()">Sign In</button>
-  </div>
+    <p style="text-align:right;margin-bottom:12px;font-size:0.82rem">
+      <a href="#" onclick="handleForgotPassword()" style="color:#0097B5;font-weight:700;text-decoration:none">Forgot password?</a>
+  </p>
+  <button class="btn-login" id="loginBtn" onclick="handleLogin()">Sign In</button>
+</div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
