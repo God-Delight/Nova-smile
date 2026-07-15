@@ -196,23 +196,40 @@
 
   /* PRIVACY POLICY PAGE */
     .policy-hero { background: var(--teal); padding: 124px 0 48px; color: var(--white); }
-    .policy-hero h1 { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 900; margin-bottom: 12px; }
-    .policy-hero p { font-size: 15px; opacity: 0.85; max-width: 560px; }
-    .policy-hero .updated { display: inline-block; margin-top: 20px; background: rgba(255,255,255,0.15); border-radius: 999px; padding: 6px 16px; font-size: 13px; font-weight: 700; }
+    .policy-hero h1 { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 900; margin-bottom: 12px; color: var(--white); }
+    .policy-hero p { font-size: 15px; opacity: 0.85; max-width: 560px; color: var(--white); }
+    .policy-hero .updated { display: inline-block; margin-top: 20px; background: rgba(255,255,255,0.15); border-radius: 999px; padding: 6px 16px; font-size: 13px; font-weight: 700; color: var(--white); }
     .policy-wrap { display: grid; grid-template-columns: 220px 1fr; gap: 48px; padding: 56px 0 80px; align-items: start; }
     .policy-nav { position: sticky; top: 88px; background: var(--bg); border-radius: 16px; padding: 24px 20px; }
     .policy-nav p { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 12px; }
-    .policy-nav a { display: block; font-size: 13px; font-weight: 600; color: var(--black); text-decoration: none; padding: 7px 0; border-bottom: 1px solid var(--line); }
+    .policy-nav a { display: block; font-size: 13px; font-weight: 600; color: var(--black); text-decoration: none; padding: 10px 0; border-bottom: 1px solid var(--line); }
     .policy-nav a:last-child { border-bottom: none; }
     .policy-nav a:hover { color: var(--teal); }
-    .policy-body section { margin-bottom: 48px; scroll-margin-top: 100px; }
+    .policy-body section { margin-bottom: 56px; padding: 0; scroll-margin-top: 100px; }
     .policy-body h2 { font-size: 1.25rem; font-weight: 900; color: var(--teal); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--line); }
-    .policy-body p { font-size: 15px; color: #374151; margin-bottom: 14px; }
-    .policy-body ul { margin: 12px 0 16px 20px; }
-    .policy-body ul li { font-size: 15px; color: #374151; margin-bottom: 8px; }
+    .policy-body p { font-size: 15px; color: #374151; margin-bottom: 10px; }
+    .policy-body ul { margin: 10px 0 12px 20px; }
+    .policy-body ul li { font-size: 15px; color: #374151; margin-bottom: 5px; }
     .policy-body strong { color: var(--black); }
     .policy-body a { color: var(--teal); font-weight: 700; }
-    @media (max-width: 900px) { .nav-links { display: none; } #navBookBtn { display: none; } .hamburger { display: flex; } .policy-wrap { grid-template-columns: 1fr; } .policy-nav { position: static; } }
+    @media (max-width: 900px) { .nav-links { display: none; } #navBookBtn { display: none; } .hamburger { display: flex; } .policy-wrap { grid-template-columns: 1fr; } .policy-nav { position: static; } .policy-nav a { padding: 14px 0; font-size: 14px; } }
+
+    /* BACK TO TOP */
+    .back-to-top{
+      position:fixed;right:24px;bottom:24px;z-index:40;
+      width:48px;height:48px;border-radius:50%;
+      background:var(--teal);color:var(--white);border:none;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 6px 20px rgba(12,12,12,0.18);
+      opacity:0;visibility:hidden;transform:translateY(12px);
+      transition:opacity .25s ease,transform .25s ease,visibility .25s ease,background .2s ease;
+    }
+    .back-to-top.show{opacity:1;visibility:visible;transform:translateY(0)}
+    .back-to-top:hover{background:var(--peach);color:var(--black)}
+    .back-to-top svg{width:20px;height:20px}
+    @media(max-width:640px){
+      .back-to-top{right:16px;bottom:16px;width:44px;height:44px}
+    }
 </style>
 </head>
 <body>
@@ -467,6 +484,17 @@
   });
   document.getElementById('drawerClose').addEventListener('click', closeDrawer);
   document.getElementById('drawerOverlay').addEventListener('click', closeDrawer);
+
+  // Back to top
+  const backToTop = document.getElementById('backToTop');
+  backToTop.classList.add('show');
+  backToTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 </script>
+
+<button id="backToTop" class="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
 </body>
 </html>

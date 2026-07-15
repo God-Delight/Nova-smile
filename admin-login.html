@@ -132,8 +132,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     const firebaseConfig = {
   apiKey: "AIzaSyAEa9BtvYs2RjSvRrZZLb2Pz3P-9Xfo5jI",
   authDomain: "nova-smile-404b5.firebaseapp.com",
@@ -151,7 +150,7 @@
 
     window.handleLogin = async function() {
       const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
+      const password = document.getElementById('password').value.trim();
       const btn = document.getElementById('loginBtn');
       const errorMsg = document.getElementById('errorMsg');
 
@@ -170,8 +169,15 @@
         window.location.href = 'admin-dashboard.html';
       } catch (err) {
         let msg = 'Invalid email or password. Please try again.';
+        if (err.code === 'auth/user-not-found') msg = 'No account found with that email.';
+        else if (err.code === 'auth/wrong-password') msg = 'Incorrect password. Please try again.';
+        else if (err.code === 'auth/too-many-requests') msg = 'Too many attempts. Please wait a bit and try again.';
+        else if (err.code === 'auth/network-request-failed') msg = 'Network error. Check your connection.';
+        else if (err.code) msg = 'Login error: ' + err.code;
         errorMsg.textContent = msg;
         errorMsg.classList.add('show');
+        errorMsg.style.background = '#fff0f0';
+        errorMsg.style.color = '#c0392b';
         btn.disabled = false;
         btn.textContent = 'Sign In';
       }
@@ -190,6 +196,31 @@
   } else {
     input.type = 'password';
     btn.textContent = 'SHOW';
+  }
+}
+window.handleForgotPassword = async function() {
+  const email = document.getElementById('email').value.trim();
+  const errorMsg = document.getElementById('errorMsg');
+
+  if (!email) {
+    errorMsg.textContent = 'Please enter your email address first, then click Forgot Password.';
+    errorMsg.classList.add('show');
+    errorMsg.style.background = '#fff8f0';
+    errorMsg.style.color = '#b45309';
+    return;
+  }
+
+  try {
+    await sendPasswordResetEmail(auth, email);
+    errorMsg.textContent = 'Reset link sent! Check your inbox. Right-click the link and copy it, then paste into your browser to avoid scanner issues.';
+    errorMsg.classList.add('show');
+    errorMsg.style.background = '#f0fff4';
+    errorMsg.style.color = '#166534';
+  } catch (err) {
+    errorMsg.textContent = 'Could not send reset email. Check that the email address is correct.';
+    errorMsg.classList.add('show');
+    errorMsg.style.background = '#fff0f0';
+    errorMsg.style.color = '#c0392b';
   }
 }
   </script>
