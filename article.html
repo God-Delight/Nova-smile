@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" type="image/png" href="Favicon.png" />
+<link rel="apple-touch-icon" href="Favicon.png" />
 <title>5 Daily Habits That Quietly Transform Your Oral Health — Novasmile</title>
 <meta name="description" content="Small, consistent habits do more for your teeth than any single appointment. Our hygienists at Novasmile share the five daily routines that quietly change everything." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -239,9 +241,9 @@ footer .logo-mark img{width:100%;max-width:900px;height:auto}
     <p class="lede">Small, consistent habits do more for your teeth than any single appointment ever could. Here's what our hygienists wish every patient knew — explained simply, with no jargon.</p>
     <div class="byline">
       <span class="dot"></span>
-      <span>Jun 12, 2026</span>
+      <span id="bylineDate">Jun 12, 2026</span>
       <span class="dot"></span>
-      <span>6 min read</span>
+      <span id="bylineReadTime">6 min read</span>
     </div>
   </div>
 </section>
@@ -440,8 +442,8 @@ document.getElementById('shareCopy').addEventListener('click', () => {
       document.querySelector('.art-head .tag').textContent = p.category || 'Article';
       document.querySelector('.art-head h1').textContent = p.title;
       document.querySelector('.art-head .lede').textContent = p.excerpt || '';
-      document.querySelectorAll('.byline span')[2].textContent = date;
-      document.querySelectorAll('.byline span')[4].textContent = p.readTime || '';
+      document.getElementById('bylineDate').textContent = date;
+      document.getElementById('bylineReadTime').textContent = p.readTime || '';
       // Update hero image
       const heroImg = document.querySelector('.art-hero .frame img');
       if (heroImg && p.image) heroImg.src = p.image;
