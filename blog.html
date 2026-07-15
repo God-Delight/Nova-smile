@@ -85,26 +85,39 @@
   .cat:hover{border-color:var(--teal);color:var(--teal)}
   .cat.active{background:var(--teal);color:var(--white);border-color:var(--teal)}
 
-  /* FEATURED POST */
+  /* FEATURED POSTS */
   .featured{padding-top:30px}
-  .feat-card{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center;max-width:1100px;margin:0 auto;background:var(--bg-soft);border-radius:14px;overflow:hidden}
-  .feat-card .ph{height:100%}
-  .feat-card .ph img{width:100%;height:100%;object-fit:cover;min-height:420px}
-  .feat-card .cp{padding:48px 48px 48px 0}
-  .feat-card .eyebrow{display:inline-block;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);font-weight:800;margin-bottom:14px}
-  .feat-card h2{font-size:32px;margin-bottom:14px}
-  .feat-card .meta{display:flex;gap:14px;font-size:12.5px;color:var(--muted);margin-bottom:18px;font-weight:600}
-  .feat-card .meta span:not(:last-child)::after{content:"•";margin-left:14px}
-  .feat-card .cp p{font-size:14.5px;margin-bottom:24px;max-width:460px}
-  .feat-card a.read{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:var(--teal);border-bottom:1px solid var(--teal);padding-bottom:3px}
-  .feat-card a.read:hover{color:var(--teal);border-color:var(--teal)}
+  .featured-head{max-width:1100px;margin:0 auto 32px}
+  .featured-head .eyebrow{display:inline-block;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);font-weight:800;margin-bottom:10px}
+  .featured-head h2{font-size:32px}
+  .featured-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:24px;max-width:1100px;margin:0 auto;align-items:start}
+  .feat-main{background:var(--white);border:1px solid var(--line);box-shadow:0 6px 24px rgba(12,12,12,0.06);border-radius:14px;overflow:hidden;display:flex;flex-direction:row;transition:.2s}
+  .feat-main:hover{box-shadow:0 16px 40px rgba(12,12,12,0.08)}
+  .feat-main .feat-img{display:block;width:40%;flex-shrink:0;overflow:hidden;background:var(--bg-soft)}
+  .feat-main .feat-img img{width:100%;height:100%;object-fit:cover;transition:.4s}
+  .feat-main:hover .feat-img img{transform:scale(1.04)}
+  .feat-main .feat-body{padding:26px 30px;display:flex;flex-direction:column;flex:1;justify-content:center;min-width:0}
+  .feat-side{display:flex;flex-direction:column;gap:24px}
+  .feat-sm{display:flex;gap:16px;background:var(--white);border:1px solid var(--line);box-shadow:0 6px 24px rgba(12,12,12,0.06);border-radius:14px;overflow:hidden;padding:14px;align-items:center;transition:.2s}
+  .feat-sm:hover{box-shadow:0 16px 40px rgba(12,12,12,0.08)}
+  .feat-sm .feat-img{width:132px;height:112px;flex-shrink:0;border-radius:10px;overflow:hidden;background:var(--bg-soft)}
+  .feat-sm .feat-img img{width:100%;height:100%;object-fit:cover}
+  .feat-sm .feat-body{padding:4px 4px 4px 0;min-width:0}
+  .feat-eyebrow{display:inline-block;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);font-weight:800;margin-bottom:10px}
+  .feat-main h3{font-size:21px;margin-bottom:10px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .feat-sm h3{font-size:15.5px;margin-bottom:6px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .feat-meta{display:flex;gap:14px;font-size:12.5px;color:var(--muted);margin-bottom:16px;font-weight:600}
+  .feat-sm .feat-meta{margin-bottom:0;font-size:11.5px}
+  .feat-main p.feat-excerpt{font-size:14px;margin-bottom:18px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .feat-main a.read{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:var(--teal);border-bottom:1px solid var(--teal);padding-bottom:3px;align-self:flex-start}
+  .feat-main a.read:hover{color:var(--teal);border-color:var(--teal)}
 
   /* POSTS GRID */
-  .posts-sec{background:var(--teal)}
+  .posts-sec{background:var(--bg-soft)}
   .posts-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:36px;max-width:1100px;margin-left:auto;margin-right:auto}
-  .posts-head .eyebrow{display:inline-block;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--peach);font-weight:800;margin-bottom:10px}
-  .posts-head h2{font-size:34px;color:#fff}
-  .posts-head p{font-size:14px;max-width:300px;text-align:right;color:rgba(255,255,255,0.8)}
+  .posts-head .eyebrow{display:inline-block;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);font-weight:800;margin-bottom:10px}
+  .posts-head h2{font-size:34px;color:var(--black)}
+  .posts-head p{font-size:14px;max-width:300px;text-align:right;color:rgba(12,12,12,0.65)}
   .posts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;max-width:1100px;margin:0 auto}
   .post{background:var(--white);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:.2s}
   .post:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(12,12,12,0.08)}
@@ -113,9 +126,9 @@
   .post:hover .ph img{transform:scale(1.05)}
   .post .cp{padding:22px;display:flex;flex-direction:column;flex:1}
   .post .tag{display:inline-block;background:var(--teal-soft);color:var(--teal);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:5px 10px;border-radius:999px;margin-bottom:12px;align-self:flex-start}
-  .post h3{font-size:17px;font-weight:800;line-height:1.3;margin-bottom:10px}
-  .post p.ex{font-size:13.5px;margin-bottom:18px;flex:1}
-  .post .meta{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);font-weight:600;border-top:1px solid var(--line);padding-top:14px}
+  .post h3{font-size:17px;font-weight:800;line-height:1.3;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .post p.ex{font-size:13.5px;margin-bottom:18px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .post .meta{margin-top:auto;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);font-weight:600;border-top:1px solid var(--line);padding-top:14px}
   .post .meta a{color:var(--black);font-weight:700}
   .post .meta a:hover{color:var(--teal)}
 
@@ -150,9 +163,13 @@ footer{background:#036D82;color:#fff;overflow:hidden}
   @media (max-width:900px){
     .nav-links{display:none}
     section{padding:56px 0}
-    .feat-card{grid-template-columns:1fr;gap:0}
-    .feat-card .cp{padding:30px}
-    .feat-card .ph img{min-height:260px}
+    .featured-grid{grid-template-columns:1fr}
+    .feat-main{flex-direction:column}
+    .feat-main .feat-img{width:100%;aspect-ratio:16/10}
+    .feat-main .feat-body{padding:24px;justify-content:flex-start}
+    .feat-side{flex-direction:column}
+    .feat-sm{padding:12px}
+    .feat-sm .feat-img{width:100px;height:88px}
     .posts-head{flex-direction:column;align-items:flex-start;gap:14px}
     .posts-head p{text-align:left}
     .posts-grid{grid-template-columns:1fr;gap:22px}
@@ -253,22 +270,14 @@ footer{background:#036D82;color:#fff;overflow:hidden}
   </div>
 </header>
 
-<!-- FEATURED POST -->
+<!-- FEATURED POSTS -->
 <section class="featured">
   <div class="container">
-    <div class="featured-card" id="featuredCard">
-  <div class="feat-img">
-    <img id="featImg" src="blog-placeholder.jpg" alt="" />
-  </div>
-  <div class="feat-content">
-    <span class="tag" id="featTag">Loading...</span>
-    <h2 id="featTitle"></h2>
-    <p id="featExcerpt"></p>
-    <div class="meta">
-      <span id="featMeta"></span>
+    <div class="featured-head">
+      <span class="eyebrow">Editor's Picks</span>
     </div>
-    <a href="#" id="featLink" class="btn btn-primary">Read Article</a>
-     </div>
+    <div class="featured-grid" id="featuredGrid">
+      <p style="grid-column:1/-1;text-align:center;padding:20px 0;color:var(--muted)">Loading articles...</p>
     </div>
   </div>
 </section>
@@ -347,28 +356,57 @@ footer{background:#036D82;color:#fff;overflow:hidden}
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-  async function loadFeaturedPost() {
-  try {
-    const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'), limit(1));
-    const snapshot = await getDocs(q);
-    if (snapshot.empty) return;
+  let featuredIds = [];
 
-    const p = { id: snapshot.docs[0].id, ...snapshot.docs[0].data() };
-    const date = p.createdAt ? p.createdAt.toDate().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
-
-    document.getElementById('featImg').src = p.image || 'blog-placeholder.jpg';
-    document.getElementById('featImg').alt = p.title;
-    document.getElementById('featTag').textContent = p.category || 'Article';
-    document.getElementById('featTitle').textContent = p.title;
-    document.getElementById('featExcerpt').textContent = p.excerpt || '';
-    document.getElementById('featMeta').textContent = date + (p.readTime ? ' · ' + p.readTime : '');
-    document.getElementById('featLink').href = 'article.html?id=' + p.id;
-  } catch (e) {
-    console.error('Featured post error:', e);
+  function featDate(p) {
+    return p.createdAt ? p.createdAt.toDate().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
   }
-}
 
-loadFeaturedPost();
+  async function loadFeaturedPosts() {
+    const featGrid = document.getElementById('featuredGrid');
+    try {
+      const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'), limit(3));
+      const snapshot = await getDocs(q);
+      if (snapshot.empty) {
+        featGrid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:20px 0;color:var(--muted)">No articles yet, check back soon.</p>';
+        return;
+      }
+      const posts = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      featuredIds = posts.map(p => p.id);
+
+      const [main, ...rest] = posts;
+      const mainDate = featDate(main);
+      const mainHtml = `
+        <article class="feat-main">
+          <a class="feat-img" href="article.html?id=${main.id}"><img src="${main.image || 'blog-placeholder.jpg'}" alt="${main.title}" /></a>
+          <div class="feat-body">
+            <span class="feat-eyebrow">${main.category || 'Article'}</span>
+            <h3>${main.title}</h3>
+            <p class="feat-excerpt">${main.excerpt || ''}</p>
+            <div class="feat-meta"><span>${mainDate}${main.readTime ? ' · ' + main.readTime : ''}</span></div>
+            <a href="article.html?id=${main.id}" class="read">Read Article →</a>
+          </div>
+        </article>`;
+
+      const sideHtml = rest.map(p => {
+        const date = featDate(p);
+        return `
+        <a class="feat-sm" href="article.html?id=${p.id}">
+          <div class="feat-img"><img src="${p.image || 'blog-placeholder.jpg'}" alt="${p.title}" /></div>
+          <div class="feat-body">
+            <span class="feat-eyebrow">${p.category || 'Article'}</span>
+            <h3>${p.title}</h3>
+            <div class="feat-meta"><span>${date}${p.readTime ? ' · ' + p.readTime : ''}</span></div>
+          </div>
+        </a>`;
+      }).join('');
+
+      featGrid.innerHTML = mainHtml + (sideHtml ? `<div class="feat-side">${sideHtml}</div>` : '');
+    } catch (e) {
+      console.error('Featured posts error:', e);
+      featGrid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:20px 0;color:var(--muted)">Could not load articles.</p>';
+    }
+  }
 
   const grid = document.getElementById('postsGrid');
   let allPosts = [];
@@ -384,9 +422,10 @@ loadFeaturedPost();
 
   function render(filter) {
     grid.innerHTML = '';
-    const filtered = filter === 'all' ? allPosts : allPosts.filter(p => catSlug[p.category] === filter);
+    const base = filter === 'all' ? allPosts.filter(p => !featuredIds.includes(p.id)) : allPosts.filter(p => catSlug[p.category] === filter);
+    const filtered = base;
     if (!filtered.length) {
-      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px 0;color:rgba(255,255,255,0.8)">No articles in this category yet, check back soon.</p>';
+      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px 0;color:rgba(12,12,12,0.6)">No articles in this category yet, check back soon.</p>';
       return;
     }
     filtered.forEach(p => {
@@ -407,18 +446,21 @@ loadFeaturedPost();
   }
 
   async function loadPosts() {
-    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px 0;color:rgba(255,255,255,0.8)">Loading articles...</p>';
+    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px 0;color:rgba(12,12,12,0.6)">Loading articles...</p>';
     try {
       const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'));
       const snapshot = await getDocs(q);
       allPosts = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
       render('all');
     } catch (e) {
-      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px 0;color:rgba(255,255,255,0.8)">Could not load articles. Please try again later.</p>';
+      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px 0;color:rgba(12,12,12,0.6)">Could not load articles. Please try again later.</p>';
     }
   }
 
-  loadPosts();
+  (async function init() {
+    await loadFeaturedPosts();
+    await loadPosts();
+  })();
 
   document.querySelectorAll('.cat').forEach(b => {
     b.addEventListener('click', () => {
